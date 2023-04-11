@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Service;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Unit\Service;
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DimensionsService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DimensionsService;
 use Neos\Flow\Tests\UnitTestCase;
 
 class DimensionServiceTest extends UnitTestCase

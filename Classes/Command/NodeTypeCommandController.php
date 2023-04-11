@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Command;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\ContentRepository\Exception\NodeTypeNotFoundException;
@@ -69,7 +69,7 @@ class NodeTypeCommandController extends CommandController
     /**
      * Shows a list of NodeTypes and if they are configured to be indexable or not
      *
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      */
     public function showIndexableConfigurationCommand(): void
     {

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,8 +13,8 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Trait
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
-use Flowpack\ElasticSearch\Transfer\Exception\ApiException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\Transfer\Exception\ApiException;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 trait Assertions
@@ -22,7 +22,7 @@ trait Assertions
 
     /**
      * @param string $indexName
-     * @throws \Flowpack\ElasticSearch\Transfer\Exception
+     * @throws \Flowpack\OpenSearch\Transfer\Exception
      * @throws ApiException
      * @throws \Neos\Flow\Http\Exception
      */
@@ -38,14 +38,14 @@ trait Assertions
         static::assertEquals($expectdAliases, array_keys($content));
     }
 
-    private static function extractNodeNames(ElasticSearchQueryResult $result): array
+    private static function extractNodeNames(OpenSearchQueryResult $result): array
     {
         return array_map(static function (NodeInterface $node) {
             return $node->getName();
         }, $result->toArray());
     }
 
-    private static function assertNodeNames(array $expectedNames, ElasticSearchQueryResult $actualResult): void
+    private static function assertNodeNames(array $expectedNames, OpenSearchQueryResult $actualResult): void
     {
         sort($expectedNames);
 

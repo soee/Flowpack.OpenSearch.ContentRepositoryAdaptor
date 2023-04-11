@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\Utility\LogEnvironment;
@@ -44,8 +44,8 @@ abstract class AbstractIndexerDriver extends AbstractDriver
     protected function isFulltextRoot(NodeInterface $node): bool
     {
         if ($node->getNodeType()->hasConfiguration('search')) {
-            $elasticSearchSettingsForNode = $node->getNodeType()->getConfiguration('search');
-            if (isset($elasticSearchSettingsForNode['fulltext']['isRoot']) && $elasticSearchSettingsForNode['fulltext']['isRoot'] === true) {
+            $openSearchSettingsForNode = $node->getNodeType()->getConfiguration('search');
+            if (isset($openSearchSettingsForNode['fulltext']['isRoot']) && $openSearchSettingsForNode['fulltext']['isRoot'] === true) {
                 return true;
             }
         }

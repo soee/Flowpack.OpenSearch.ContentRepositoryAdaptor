@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,12 +13,12 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Utility\Arrays;
 
 /**
- * Abstract Elasticsearch Query
+ * Abstract OpenSearch Query
  */
 abstract class AbstractQuery implements QueryInterface, \JsonSerializable, \ArrayAccess, ProtectedContextAwareInterface
 {
@@ -56,7 +56,7 @@ abstract class AbstractQuery implements QueryInterface, \JsonSerializable, \Arra
     }
 
     /**
-     * Modify a part of the Elasticsearch Request denoted by $path, merging together
+     * Modify a part of the OpenSearch Request denoted by $path, merging together
      * the existing values and the passed-in values.
      *
      * @param string $path

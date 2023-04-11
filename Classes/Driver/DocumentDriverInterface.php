@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,17 +14,17 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\Domain\Model\Index;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\NodeType;
 
 /**
- * Elasticsearch Document Driver Interface
+ * OpenSearch Document Driver Interface
  */
 interface DocumentDriverInterface
 {
     /**
-     * Generate the query to delete Elastic document for the give node
+     * Generate the query to delete OpenSearch document for the give node
      *
      * @param NodeInterface $node
      * @param string $identifier

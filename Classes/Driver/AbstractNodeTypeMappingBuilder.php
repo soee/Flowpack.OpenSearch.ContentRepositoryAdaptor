@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -21,14 +21,14 @@ use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 
 /**
- * Builds the mapping information for Content Repository Node Types in Elasticsearch
+ * Builds the mapping information for Content Repository Node Types in OpenSearch
  *
  * @Flow\Scope("singleton")
  */
 abstract class AbstractNodeTypeMappingBuilder implements NodeTypeMappingBuilderInterface
 {
     /**
-     * The default configuration for a given property type in NodeTypes.yaml, if no explicit elasticSearch section defined there.
+     * The default configuration for a given property type in NodeTypes.yaml, if no explicit OpenSearch section defined there.
      *
      * @var array
      */

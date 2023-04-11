@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,12 +14,12 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
 use Psr\Log\LoggerInterface;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * Builds objects which are specific to an elastic search version
+ * Builds objects which are specific to an OpenSearch version
  *
  * @Flow\Scope("singleton")
  */

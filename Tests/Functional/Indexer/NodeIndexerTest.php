@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Indexer;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Indexer;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,26 +13,25 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Index
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\QueryInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping\NodeTypeMappingBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DimensionsService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\BaseElasticsearchContentRepositoryAdapterTest;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\Assertions;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryNodeCreationTrait;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
-use Flowpack\ElasticSearch\Domain\Model\Mapping;
-use Flowpack\ElasticSearch\Exception;
-use Flowpack\ElasticSearch\Transfer\Exception\ApiException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\QueryInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping\NodeTypeMappingBuilder;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DimensionsService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\BaseOpenSearchContentRepositoryAdapterTest;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\Assertions;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryNodeCreationTrait;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
+use Flowpack\OpenSearch\Domain\Model\Mapping;
+use Flowpack\OpenSearch\Exception;
+use Flowpack\OpenSearch\Transfer\Exception\ApiException;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\Arrays;
 
-class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
+class NodeIndexerTest extends BaseOpenSearchContentRepositoryAdapterTest
 {
     use ContentRepositorySetupTrait, ContentRepositoryNodeCreationTrait, Assertions;
 
@@ -73,7 +72,7 @@ class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
     /**
      * @test
      *
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      * @throws ConfigurationException
      * @throws Exception
      */
@@ -142,11 +141,11 @@ class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
         // check the node path in es after indexing
         $pathInEs = $this->getNeosPathOfNodeInIndex($testNode);
         self::assertNotNull($pathInEs, 'Node does not exist after indexing');
-        self::assertEquals($pathInEs, $testNode->getPath(), 'Wrong node path in elasticsearch after indexing');
+        self::assertEquals($pathInEs, $testNode->getPath(), 'Wrong node path in OpenSearch after indexing');
     }
 
     /**
-     * Fetch the node path (stored in elasticsearch) of the given node
+     * Fetch the node path (stored in OpenSearch) of the given node
      */
     private function getNeosPathOfNodeInIndex(NodeInterface $node): ?string
     {
@@ -171,8 +170,8 @@ class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
      * @return bool
      * @throws ConfigurationException
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException
      * @throws \Neos\Flow\Http\Exception
      */
     private function nodeExistsInIndex(NodeInterface $testNode): bool
@@ -190,7 +189,7 @@ class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
      * @return NodeInterface
      * @throws ConfigurationException
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     protected function setupCrAndIndexTestNode(): NodeInterface
@@ -198,7 +197,7 @@ class NodeIndexerTest extends BaseElasticsearchContentRepositoryAdapterTest
         $this->setupContentRepository();
         $this->createNodesForNodeSearchTest();
         /** @var NodeInterface $testNode */
-        $testNode = current($this->siteNode->getChildNodes('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document', 1));
+        $testNode = current($this->siteNode->getChildNodes('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document', 1));
 
         $this->nodeIndexer->setDimensions($testNode->getDimensions());
         $this->nodeIndexer->getIndex()->create();

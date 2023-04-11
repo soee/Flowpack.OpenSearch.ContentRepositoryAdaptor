@@ -1,31 +1,31 @@
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:BaseType':
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:BaseType':
   superTypes: {  }
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type1':
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type1':
   superTypes:
-    'Flowpack.ElasticSearch.ContentRepositoryAdaptor:BaseType': true
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type2':
+    'Flowpack.OpenSearch.ContentRepositoryAdaptor:BaseType': true
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type2':
   superTypes: {  }
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type3':
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type3':
   superTypes:
-    'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type1': true
-    'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type2': true
+    'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type1': true
+    'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type2': true
 
 'Neos.Neos:Document':
   properties:
     title_analyzed:
       type: string
       search:
-        elasticSearchMapping:
+        openSearchMapping:
           type: text
 
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document':
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:Document':
   superTypes:
     'Neos.Neos:Document': true
   childNodes:
     main:
       type: 'Neos.Neos:ContentCollection'
 
-'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Content':
+'Flowpack.OpenSearch.ContentRepositoryAdaptor:Content':
   superTypes:
     'Neos.Neos:Content': true
   properties:

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,13 +13,13 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\BaseElasticsearchContentRepositoryAdapterTest;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\Assertions;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryMultiDimensionNodeCreationTrait;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\BaseOpenSearchContentRepositoryAdapterTest;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\Assertions;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryMultiDimensionNodeCreationTrait;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 
-class ElasticSearchMultiDimensionQueryTest extends BaseElasticsearchContentRepositoryAdapterTest
+class OpenSearchMultiDimensionQueryTest extends BaseOpenSearchContentRepositoryAdapterTest
 {
     use ContentRepositorySetupTrait, ContentRepositoryMultiDimensionNodeCreationTrait, Assertions;
 
@@ -55,7 +55,7 @@ class ElasticSearchMultiDimensionQueryTest extends BaseElasticsearchContentRepos
         $resultDefault = $this->getQueryBuilder()
             ->query($this->siteNodeDefault)
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortDesc('title')
             ->execute();
 
@@ -71,7 +71,7 @@ class ElasticSearchMultiDimensionQueryTest extends BaseElasticsearchContentRepos
         $resultDe = $this->getQueryBuilder()
             ->query($this->siteNodeDe)
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortDesc('title')
             ->execute();
 
@@ -88,7 +88,7 @@ class ElasticSearchMultiDimensionQueryTest extends BaseElasticsearchContentRepos
         $resultDk = $this->getQueryBuilder()
             ->query($this->siteNodeDk)
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortDesc('title')
             ->execute();
 

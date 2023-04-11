@@ -1,5 +1,5 @@
 Flowpack:
-  ElasticSearch:
+  OpenSearch:
     ContentRepositoryAdaptor:
       command:
         useSubProcesses: true
@@ -19,7 +19,7 @@ Flowpack:
         mapping:
           6.x: &v6x
             query:
-              className: Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery
+              className: Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery
               arguments:
                 request:
                   query:
@@ -68,15 +68,15 @@ Flowpack:
                     - neos_fulltext.text^1
 
             document:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\DocumentDriver'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\DocumentDriver'
             indexer:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\IndexerDriver'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\IndexerDriver'
             indexManagement:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\IndexDriver'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\IndexDriver'
             request:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\RequestDriver'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\RequestDriver'
             system:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\SystemDriver'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\SystemDriver'
             nodeTypeMappingBuilder:
-              className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping\NodeTypeMappingBuilder'
+              className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping\NodeTypeMappingBuilder'
           7.x: *v6x

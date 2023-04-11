@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Command;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,17 +14,17 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
  */
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorHandlingService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\RuntimeException;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\WorkspaceIndexer;
-use Flowpack\ElasticSearch\Domain\Model\Mapping;
-use Flowpack\ElasticSearch\Transfer\Exception\ApiException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorHandlingService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\RuntimeException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\WorkspaceIndexer;
+use Flowpack\OpenSearch\Domain\Model\Mapping;
+use Flowpack\OpenSearch\Transfer\Exception\ApiException;
 use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\ContentRepository\Domain\Repository\NodeDataRepository;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
@@ -135,7 +135,7 @@ class NodeIndexCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
     protected $searchClient;
 
@@ -157,7 +157,7 @@ class NodeIndexCommandController extends CommandController
      * @throws Exception
      * @throws RuntimeException
      * @throws SubProcessException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     public function indexNodeCommand(string $identifier, string $workspace = null, string $postfix = null): void
     {
@@ -255,7 +255,7 @@ class NodeIndexCommandController extends CommandController
      */
     public function buildCommand(int $limit = null, bool $update = false, string $workspace = null, string $postfix = null): void
     {
-        $this->logger->info(sprintf('Starting elasticsearch indexing %s sub processes', $this->useSubProcesses ? 'with' : 'without'), LogEnvironment::fromMethodName(__METHOD__));
+        $this->logger->info(sprintf('Starting OpenSearch indexing %s sub processes', $this->useSubProcesses ? 'with' : 'without'), LogEnvironment::fromMethodName(__METHOD__));
 
         if ($workspace !== null && $this->workspaceRepository->findByIdentifier($workspace) === null) {
             $this->logger->error('The given workspace (' . $workspace . ') does not exist.', LogEnvironment::fromMethodName(__METHOD__));
@@ -402,7 +402,7 @@ class NodeIndexCommandController extends CommandController
      * @param bool $update
      * @param string|null $postfix
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      * @throws \Exception
      * @Flow\Internal
@@ -457,7 +457,7 @@ class NodeIndexCommandController extends CommandController
      * @param string $dimensionsValues
      * @param string $postfix
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      * @throws ConfigurationException
      * @Flow\Internal
@@ -477,7 +477,7 @@ class NodeIndexCommandController extends CommandController
      * @param string $postfix
      * @param bool $update
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws ApiException
      * @throws ConfigurationException
      * @Flow\Internal
@@ -529,7 +529,7 @@ class NodeIndexCommandController extends CommandController
             } catch (ApiException $exception) {
                 $exception->getResponse()->getBody()->rewind();
                 $response = json_decode($exception->getResponse()->getBody()->getContents(), false);
-                $message = sprintf('Nothing removed. ElasticSearch responded with status %s', $response->status);
+                $message = sprintf('Nothing removed. OpenSearch responded with status %s', $response->status);
 
                 if (isset($response->error->type)) {
                     $this->logger->error(sprintf('%s, saying "%s: %s"', $message, $response->error->type, $response->error->reason), LogEnvironment::fromMethodName(__METHOD__));
@@ -565,7 +565,7 @@ class NodeIndexCommandController extends CommandController
         ob_start(null, 1 << 20);
 
         if ($this->useSubProcesses) {
-            $commandIdentifier = 'flowpack.elasticsearch.contentrepositoryadaptor:nodeindex:' . $command;
+            $commandIdentifier = 'Flowpack.OpenSearch.ContentRepositoryAdaptor:nodeindex:' . $command;
             $status = Scripts::executeCommand($commandIdentifier, $this->flowSettings, true, array_filter($arguments));
 
             if ($status !== true) {
@@ -609,7 +609,7 @@ class NodeIndexCommandController extends CommandController
      *
      * @return void
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws ConfigurationException
      * @throws \Neos\Flow\Http\Exception
      */

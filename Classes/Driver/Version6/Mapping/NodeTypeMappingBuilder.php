@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Mapping;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,11 +13,11 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Mappin
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\AbstractNodeTypeMappingBuilder;
-use Flowpack\ElasticSearch\Domain\Model\Index;
-use Flowpack\ElasticSearch\Domain\Model\Mapping;
-use Flowpack\ElasticSearch\Mapping\MappingCollection;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\AbstractNodeTypeMappingBuilder;
+use Flowpack\OpenSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\Domain\Model\Mapping;
+use Flowpack\OpenSearch\Mapping\MappingCollection;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\Error\Messages\Result;
 use Neos\Error\Messages\Warning;
@@ -39,8 +39,8 @@ class NodeTypeMappingBuilder extends AbstractNodeTypeMappingBuilder
      * Builds a Mapping Collection from the configured node types
      *
      * @param Index $index
-     * @return MappingCollection<\Flowpack\ElasticSearch\Domain\Model\Mapping>
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @return MappingCollection<\Flowpack\OpenSearch\Domain\Model\Mapping>
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      */
     public function buildMappingInformation(Index $index): MappingCollection
     {
@@ -60,8 +60,8 @@ class NodeTypeMappingBuilder extends AbstractNodeTypeMappingBuilder
 
             $mapping = new Mapping($index->findType($nodeTypeName));
             $fullConfiguration = $nodeType->getFullConfiguration();
-            if (isset($fullConfiguration['search']['elasticSearchMapping'])) {
-                $fullMapping = $fullConfiguration['search']['elasticSearchMapping'];
+            if (isset($fullConfiguration['search']['openSearchMapping'])) {
+                $fullMapping = $fullConfiguration['search']['openSearchMapping'];
                 $mapping->setFullMapping($fullMapping);
             }
 
@@ -71,16 +71,16 @@ class NodeTypeMappingBuilder extends AbstractNodeTypeMappingBuilder
                     continue;
                 }
 
-                if (isset($propertyConfiguration['search']['elasticSearchMapping'])) {
-                    if (is_array($propertyConfiguration['search']['elasticSearchMapping'])) {
-                        $propertyMapping = array_filter($propertyConfiguration['search']['elasticSearchMapping'], static function ($value) {
+                if (isset($propertyConfiguration['search']['openSearchMapping'])) {
+                    if (is_array($propertyConfiguration['search']['openSearchMapping'])) {
+                        $propertyMapping = array_filter($propertyConfiguration['search']['openSearchMapping'], static function ($value) {
                             return $value !== null;
                         });
                         $mapping->setPropertyByPath($propertyName, $propertyMapping);
                     }
-                } elseif (isset($propertyConfiguration['type'], $this->defaultConfigurationPerType[$propertyConfiguration['type']]['elasticSearchMapping'])) {
-                    if (is_array($this->defaultConfigurationPerType[$propertyConfiguration['type']]['elasticSearchMapping'])) {
-                        $mapping->setPropertyByPath($propertyName, $this->defaultConfigurationPerType[$propertyConfiguration['type']]['elasticSearchMapping']);
+                } elseif (isset($propertyConfiguration['type'], $this->defaultConfigurationPerType[$propertyConfiguration['type']]['openSearchMapping'])) {
+                    if (is_array($this->defaultConfigurationPerType[$propertyConfiguration['type']]['openSearchMapping'])) {
+                        $mapping->setPropertyByPath($propertyName, $this->defaultConfigurationPerType[$propertyConfiguration['type']]['openSearchMapping']);
                     }
                 } else {
                     $this->lastMappingErrors->addWarning(new Warning('Node Type "' . $nodeTypeName . '" - property "' . $propertyName . '": No ElasticSearch Mapping found.'));

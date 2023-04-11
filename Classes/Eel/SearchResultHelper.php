@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -17,7 +17,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
 use Neos\Eel\ProtectedContextAwareInterface;
 
 /**
- * Eel Helper to process the ElasticSearch Query Result
+ * Eel Helper to process the OpenSearch Query Result
  */
 class SearchResultHelper implements ProtectedContextAwareInterface
 {
@@ -33,12 +33,12 @@ class SearchResultHelper implements ProtectedContextAwareInterface
      *     searchQuery = ${Search.query(site).fulltext('noes cms').termSuggestions('noes cms')}
      *     didYouMean = ${SearchResult.didYouMean(this.searchQuery.execute(), 0.5)}
      *
-     * @param ElasticSearchQueryResult $searchResult The result of an elastic search query
+     * @param OpenSearchQueryResult $searchResult The result of an OpenSearch query
      * @param float $scoreThreshold The minimum required score to return the suggestion
      * @param string $suggestionName The suggestion name which was given in the suggestion definition
      * @return string
      */
-    public function didYouMean(ElasticSearchQueryResult $searchResult, float $scoreThreshold = 0.7, string $suggestionName = 'suggestions'): string
+    public function didYouMean(OpenSearchQueryResult $searchResult, float $scoreThreshold = 0.7, string $suggestionName = 'suggestions'): string
     {
         $maxScore = 0;
         $suggestionParts = [];

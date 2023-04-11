@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,16 +13,15 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\BaseElasticsearchContentRepositoryAdapterTest;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryNodeCreationTrait;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\BaseOpenSearchContentRepositoryAdapterTest;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositoryNodeCreationTrait;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits\ContentRepositorySetupTrait;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 
-class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTest
+class OpenSearchQueryTest extends BaseOpenSearchContentRepositoryAdapterTest
 {
     use ContentRepositorySetupTrait, ContentRepositoryNodeCreationTrait;
 
@@ -39,14 +38,14 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     /**
      * @test
      */
-    public function elasticSearchQueryBuilderStartsClean(): void
+    public function openSearchQueryBuilderStartsClean(): void
     {
-        /** @var ElasticSearchQueryBuilder $query */
-        $query = $this->objectManager->get(ElasticSearchQueryBuilder::class);
+        /** @var OpenSearchQueryResult $query */
+        $query = $this->objectManager->get(OpenSearchQueryResult::class);
         $cleanRequestArray = $query->getRequest()->toArray();
-        $query->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document');
+        $query->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document');
 
-        $query2 = $this->objectManager->get(ElasticSearchQueryBuilder::class);
+        $query2 = $this->objectManager->get(OpenSearchQueryResult::class);
 
         static::assertNotSame($query->getRequest(), $query2->getRequest());
         static::assertEquals($cleanRequestArray, $query2->getRequest()->toArray());
@@ -57,7 +56,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
      */
     public function fullTextSearchReturnsTheDocumentNode(): void
     {
-        /** @var ElasticSearchQueryResult $result */
+        /** @var OpenSearchQueryResult $result */
         $result = $this->getQueryBuilder()
             ->fulltext('circum*')
             ->log($this->getLogMessagePrefix(__METHOD__))
@@ -66,7 +65,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
 
         /** @var NodeInterface $node */
         $node = $result->current();
-        static::assertEquals('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document', $node->getNodeType()->getName());
+        static::assertEquals('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document', $node->getNodeType()->getName());
         static::assertEquals('test-node-1', $node->getName());
     }
 
@@ -75,7 +74,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
      */
     public function fullTextHighlighting(): void
     {
-        /** @var ElasticSearchQueryBuilder $queryBuilder */
+        /** @var OpenSearchQueryResult $queryBuilder */
         $queryBuilder = $this->getQueryBuilder();
 
         /** @var NodeInterface $resultNode */
@@ -84,7 +83,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
             ->log($this->getLogMessagePrefix(__METHOD__))
             ->execute()
             ->current();
-        $searchHitForNode = $queryBuilder->getFullElasticSearchHitForNode($resultNode);
+        $searchHitForNode = $queryBuilder->getFullOpenSearchHitForNode($resultNode);
         $highlightedText = current($searchHitForNode['highlight']['neos_fulltext.text']);
         $expected = 'A Scout smiles and <em>whistles</em> under all circumstances.';
         static::assertEquals($expected, $highlightedText);
@@ -97,7 +96,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     {
         $resultCount = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->count();
         static::assertEquals(4, $resultCount);
     }
@@ -118,8 +117,8 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
      * @test
      *
      * @throws QueryBuildingException
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function prefixFilter(): void
@@ -138,7 +137,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     {
         $query = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->limit(1);
 
         $resultCount = $query->count();
@@ -240,7 +239,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     {
         $result = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortDesc('title')
             ->execute();
 
@@ -263,10 +262,10 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     {
         $result = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortAsc('title')
             ->execute();
-        /** @var ElasticSearchQueryResult $result */
+        /** @var OpenSearchQueryResult $result */
         $node = $result->getFirst();
 
         static::assertInstanceOf(NodeInterface::class, $node);
@@ -280,7 +279,7 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     {
         $result = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document')
             ->sortAsc('title')
             ->execute();
 
@@ -292,15 +291,15 @@ class ElasticSearchQueryTest extends BaseElasticsearchContentRepositoryAdapterTe
     /**
      * @test
      * @throws QueryBuildingException
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function cacheLifetimeIsCalculatedCorrectly(): void
     {
         $cacheLifetime = $this->getQueryBuilder()
             ->log($this->getLogMessagePrefix(__METHOD__))
-            ->nodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Content')
+            ->nodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Content')
             ->sortAsc('title')
             ->cacheLifetime();
 

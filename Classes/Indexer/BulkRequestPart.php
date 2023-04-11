@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * source code.
  */
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer;
 
 use Generator;
 

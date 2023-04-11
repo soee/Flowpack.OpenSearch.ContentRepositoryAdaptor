@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,7 +14,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  */
 
 /**
- * Elasticsearch Index Driver Interface
+ * OpenSearch Index Driver Interface
  */
 interface IndexDriverInterface
 {

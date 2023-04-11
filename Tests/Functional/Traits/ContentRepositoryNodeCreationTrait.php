@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -28,29 +28,29 @@ trait ContentRepositoryNodeCreationTrait
         ]);
         $rootNode = $this->context->getRootNode();
 
-        $this->siteNode = $rootNode->createNode('welcome', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $this->siteNode = $rootNode->createNode('welcome', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $this->siteNode->setProperty('title', 'welcome');
 
-        $newDocumentNode1 = $this->siteNode->createNode('test-node-1', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $newDocumentNode1 = $this->siteNode->createNode('test-node-1', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $newDocumentNode1->setProperty('title', 'chicken');
         $newDocumentNode1->setProperty('title_analyzed', 'chicken');
 
-        $newContentNode1 = $newDocumentNode1->getNode('main')->createNode('document-1-text-1', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Content'));
+        $newContentNode1 = $newDocumentNode1->getNode('main')->createNode('document-1-text-1', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Content'));
         $newContentNode1->setProperty('text', 'A Scout smiles and whistles under all circumstances.');
 
-        $newDocumentNode2 = $this->siteNode->createNode('test-node-2', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $newDocumentNode2 = $this->siteNode->createNode('test-node-2', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $newDocumentNode2->setProperty('title', 'chicken');
         $newDocumentNode2->setProperty('title_analyzed', 'chicken');
 
         // Nodes for cacheLifetime test
-        $newContentNode2 = $newDocumentNode2->getNode('main')->createNode('document-2-text-1', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Content'));
+        $newContentNode2 = $newDocumentNode2->getNode('main')->createNode('document-2-text-1', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Content'));
         $newContentNode2->setProperty('text', 'Hidden after 2025-01-01');
         $newContentNode2->setHiddenAfterDateTime(new \DateTime('@1735686000'));
-        $newContentNode3 = $newDocumentNode2->getNode('main')->createNode('document-2-text-2', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Content'));
+        $newContentNode3 = $newDocumentNode2->getNode('main')->createNode('document-2-text-2', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Content'));
         $newContentNode3->setProperty('text', 'Hidden before 2018-07-18');
         $newContentNode3->setHiddenBeforeDateTime(new \DateTime('@1531864800'));
 
-        $newDocumentNode3 = $this->siteNode->createNode('test-node-3', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $newDocumentNode3 = $this->siteNode->createNode('test-node-3', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $newDocumentNode3->setProperty('title', 'egg');
         $newDocumentNode3->setProperty('title_analyzed', 'egg');
 

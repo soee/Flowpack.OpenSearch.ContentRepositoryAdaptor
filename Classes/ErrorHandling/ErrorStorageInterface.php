@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\ErrorHandling;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -19,7 +19,7 @@ interface ErrorStorageInterface
      * Write the error message and return a short info for the log
      *
      * @param array $errorResult
-     * @return string Information about the logged Elasticsearch Error
+     * @return string Information about the logged OpenSearch Error
      */
     public function logErrorResult(array $errorResult): string;
 }

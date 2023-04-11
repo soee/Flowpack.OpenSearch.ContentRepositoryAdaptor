@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Traits;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -37,7 +37,7 @@ trait ContentRepositoryMultiDimensionNodeCreationTrait
         ]);
 
         $rootNode = $defaultLanguageDimensionContext->getRootNode();
-        $this->siteNodeDefault = $rootNode->createNode('root', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $this->siteNodeDefault = $rootNode->createNode('root', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $this->siteNodeDefault->setProperty('title', 'root-default');
         $this->siteNodeDe = $deLanguageDimensionContext->adoptNode($this->siteNodeDefault, true);
         $this->siteNodeDe->setProperty('title', 'root-de');
@@ -45,7 +45,7 @@ trait ContentRepositoryMultiDimensionNodeCreationTrait
         $this->siteNodeDk->setProperty('title', 'root-dk');
 
         // add a document node that is translated in two languages
-        $newDocumentNode1 = $this->siteNodeDefault->createNode('document1', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $newDocumentNode1 = $this->siteNodeDefault->createNode('document1', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $newDocumentNode1->setProperty('title', 'document1-default');
 
         $translatedDocumentNode1De = $deLanguageDimensionContext->adoptNode($newDocumentNode1, true);
@@ -54,22 +54,22 @@ trait ContentRepositoryMultiDimensionNodeCreationTrait
         $translatedDocumentNode1Dk->setProperty('title', 'document1-dk');
 
         // add a document node that is not translated
-        $newDocumentNode_untranslated = $this->siteNodeDefault->createNode('document-untranslated', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $newDocumentNode_untranslated = $this->siteNodeDefault->createNode('document-untranslated', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $newDocumentNode_untranslated->setProperty('title', 'document-untranslated');
 
         // add additional, but separate nodes here
-        $standaloneDocumentNode2De = $this->siteNodeDe->createNode('document2-de', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $standaloneDocumentNode2De = $this->siteNodeDe->createNode('document2-de', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $standaloneDocumentNode2De->setProperty('title', 'document2-de');
 
-        $standaloneDocumentNode2Dk = $this->siteNodeDk->createNode('document2-dk', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $standaloneDocumentNode2Dk = $this->siteNodeDk->createNode('document2-dk', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $standaloneDocumentNode2Dk->setProperty('title', 'document2-dk');
 
         // add an additional german node
-        $documentNodeDe3 = $standaloneDocumentNode2De->createNode('document3-de', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $documentNodeDe3 = $standaloneDocumentNode2De->createNode('document3-de', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $documentNodeDe3->setProperty('title', 'document3-de');
 
         // add another german node, but translate it to danish
-        $documentNodeDe4 = $standaloneDocumentNode2De->createNode('document4-de', $this->nodeTypeManager->getNodeType('Flowpack.ElasticSearch.ContentRepositoryAdaptor:Document'));
+        $documentNodeDe4 = $standaloneDocumentNode2De->createNode('document4-de', $this->nodeTypeManager->getNodeType('Flowpack.OpenSearch.ContentRepositoryAdaptor:Document'));
         $documentNodeDe4->setProperty('title', 'document4-de');
 
         // This one has no connetion to the DK root and DK does not fallback to DE, so this node should not be indexed!

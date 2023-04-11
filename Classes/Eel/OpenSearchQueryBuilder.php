@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,17 +13,18 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\QueryInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Dto\SearchResult;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\QueryInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Dto\SearchResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
 use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Persistence\QueryResultInterface;
 use Psr\Log\LoggerInterface;
-use Flowpack\ElasticSearch\Transfer\Exception\ApiException;
+use Flowpack\OpenSearch\Transfer\Exception\ApiException;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Search\Search\QueryBuilderInterface;
 use Neos\Eel\ProtectedContextAwareInterface;
@@ -33,15 +34,15 @@ use Neos\Flow\Utility\Now;
 use Neos\Utility\Arrays;
 
 /**
- * Query Builder for ElasticSearch Queries
+ * Query Builder for OpenSearch Queries
  */
-class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextAwareInterface
+class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $elasticSearchClient;
+    protected $openSearchClient;
 
     /**
      * @Flow\Inject
@@ -118,7 +119,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Filter by node type, taking inheritance into account.
      *
      * @param string $nodeType the node type to filter for
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
@@ -135,7 +136,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Sort descending by $propertyName
      *
      * @param string $propertyName the property name to sort by
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
     public function sortDesc(string $propertyName): QueryBuilderInterface
@@ -153,7 +154,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Sort ascending by $propertyName
      *
      * @param string $propertyName the property name to sort by
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
     public function sortAsc(string $propertyName): QueryBuilderInterface
@@ -171,10 +172,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Add a $configuration sort filter to the request
      *
      * @param array $configuration
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
-    public function sort($configuration): ElasticSearchQueryBuilder
+    public function sort($configuration): OpenSearchQueryResult
     {
         $this->request->addSortFilter($configuration);
 
@@ -190,7 +191,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * This algorithm can be re-checked when https://github.com/elasticsearch/elasticsearch/issues/3300 is merged.
      *
      * @param integer $limit
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws IllegalObjectTypeException
      * @api
      */
@@ -201,7 +202,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
         }
 
         $currentWorkspaceNestingLevel = 1;
-        $workspace = $this->elasticSearchClient->getContextNode()->getContext()->getWorkspace();
+        $workspace = $this->openSearchClient->getContextNode()->getContext()->getWorkspace();
         while ($workspace->getBaseWorkspace() !== null) {
             $currentWorkspaceNestingLevel++;
             $workspace = $workspace->getBaseWorkspace();
@@ -219,7 +220,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * output records starting at $from
      *
      * @param integer $from
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
     public function from($from): QueryBuilderInterface
@@ -239,7 +240,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
@@ -251,10 +252,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
     /**
      * @param string $propertyName
      * @param mixed $value
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      */
-    public function exclude(string $propertyName, $value): ElasticSearchQueryBuilder
+    public function exclude(string $propertyName, $value): OpenSearchQueryResult
     {
         return $this->queryFilter('term', [$propertyName => $this->convertValue($value)], 'must_not');
     }
@@ -265,11 +266,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function greaterThan(string $propertyName, $value, string $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function greaterThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
     {
         return $this->queryFilter('range', [$propertyName => ['gt' => $this->convertValue($value)]], $clauseType);
     }
@@ -280,11 +281,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function greaterThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function greaterThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
     {
         return $this->queryFilter('range', [$propertyName => ['gte' => $this->convertValue($value)]], $clauseType);
     }
@@ -295,11 +296,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function lessThan(string $propertyName, $value, string $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function lessThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
     {
         return $this->queryFilter('range', [$propertyName => ['lt' => $this->convertValue($value)]], $clauseType);
     }
@@ -310,11 +311,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function lessThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function lessThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
     {
         return $this->queryFilter('range', [$propertyName => ['lte' => $this->convertValue($value)]], $clauseType);
     }
@@ -329,11 +330,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $filterType
      * @param mixed $filterOptions
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function queryFilter(string $filterType, $filterOptions, string $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function queryFilter(string $filterType, $filterOptions, string $clauseType = 'must'): OpenSearchQueryResult
     {
         $this->request->queryFilter($filterType, $filterOptions, $clauseType);
 
@@ -347,10 +348,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param string $path
      * @param array $data
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      */
-    public function appendAtPath(string $path, array $data): ElasticSearchQueryBuilder
+    public function appendAtPath(string $path, array $data): OpenSearchQueryResult
     {
         $this->request->appendAtPath($path, $data);
 
@@ -374,11 +375,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param array $data An associative array of keys as variable names and values as variable values
      * @param string $clauseType one of must, should, must_not
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @api
      */
-    public function queryFilterMultiple(array $data, $clauseType = 'must'): ElasticSearchQueryBuilder
+    public function queryFilterMultiple(array $data, $clauseType = 'must'): OpenSearchQueryResult
     {
         foreach ($data as $key => $value) {
             if ($value !== null) {
@@ -407,10 +408,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $type Aggregation type
      * @param string $parentPath
      * @param int|null $size The amount of buckets to return or null if not applicable to the aggregation
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      */
-    public function fieldBasedAggregation(string $name, string $field, string $type = 'terms', string $parentPath = '', ?int $size = null): ElasticSearchQueryBuilder
+    public function fieldBasedAggregation(string $name, string $field, string $type = 'terms', string $parentPath = '', ?int $size = null): OpenSearchQueryResult
     {
         $aggregationDefinition = [
             $type => [
@@ -445,10 +446,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $name
      * @param array $aggregationDefinition
      * @param string $parentPath
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      */
-    public function aggregation(string $name, array $aggregationDefinition, string $parentPath = ''): ElasticSearchQueryBuilder
+    public function aggregation(string $name, array $aggregationDefinition, string $parentPath = ''): OpenSearchQueryResult
     {
         $this->request->aggregation($name, $aggregationDefinition, $parentPath);
 
@@ -467,9 +468,9 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param string $text
      * @param string $field
      * @param string $name
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    public function termSuggestions(string $text, string $field = 'neos_fulltext.text', string $name = 'suggestions'): ElasticSearchQueryBuilder
+    public function termSuggestions(string $text, string $field = 'neos_fulltext.text', string $name = 'suggestions'): OpenSearchQueryResult
     {
         $suggestionDefinition = [
             'text' => $text,
@@ -501,9 +502,9 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param string $name
      * @param array $suggestionDefinition
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    public function suggestions(string $name, array $suggestionDefinition): ElasticSearchQueryBuilder
+    public function suggestions(string $name, array $suggestionDefinition): OpenSearchQueryResult
     {
         $this->request->suggestions($name, $suggestionDefinition);
 
@@ -524,10 +525,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Log the current request to the Elasticsearch log for debugging after it has been executed.
      *
      * @param string $message an optional message to identify the log entry
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
-    public function log($message = null): ElasticSearchQueryBuilder
+    public function log($message = null): OpenSearchQueryResult
     {
         $this->logThisQuery = true;
         $this->logMessage = $message;
@@ -573,11 +574,11 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
     /**
      * Execute the query and return the list of nodes as result.
      *
-     * This method is rather internal; just to be called from the ElasticSearchQueryResult. For the public API, please use execute()
+     * This method is rather internal; just to be called from the OpenSearchQueryResult. For the public API, please use execute()
      *
      * @return array<\Neos\ContentRepository\Domain\Model\NodeInterface>
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function fetch(): array
@@ -585,7 +586,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
         try {
             $timeBefore = microtime(true);
             $request = $this->request->getRequestAsJson();
-            $response = $this->elasticSearchClient->getIndex()->request('GET', '/_search', [], $request);
+            $response = $this->openSearchClient->getIndex()->request('GET', '/_search', [], $request);
             $timeAfterwards = microtime(true);
 
             $this->result = $response->getTreatedContent();
@@ -623,27 +624,27 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * Get a query result object for lazy execution of the query
      *
      * @param bool $cacheResult
-     * @return ElasticSearchQueryResult
+     * @return OpenSearchQueryResult
+     * @throws Exception
+     * @throws ConfigurationException
      * @throws \JsonException
      * @api
      */
     public function execute(bool $cacheResult = true): \Traversable
     {
-        $elasticSearchQuery = new ElasticSearchQuery($this);
-        return $elasticSearchQuery->execute($cacheResult);
+        return (new OpenSearchQuery($this))->execute($cacheResult);
     }
 
     /**
      * Get a uncached query result object for lazy execution of the query
      *
-     * @return ElasticSearchQueryResult
+     * @return OpenSearchQueryResult
      * @throws \JsonException
      * @api
      */
-    public function executeUncached(): ElasticSearchQueryResult
+    public function executeUncached(): OpenSearchQueryResult
     {
-        $elasticSearchQuery = new ElasticSearchQuery($this);
-        return $elasticSearchQuery->execute();
+        return (new OpenSearchQuery($this))->execute();
     }
 
     /**
@@ -651,7 +652,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @return integer
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      * @api
      */
@@ -660,7 +661,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
         $timeBefore = microtime(true);
         $request = $this->getRequest()->getCountRequestAsJson();
 
-        $response = $this->elasticSearchClient->getIndex()->request('GET', '/_count', [], $request);
+        $response = $this->openSearchClient->getIndex()->request('GET', '/_count', [], $request);
         $timeAfterwards = microtime(true);
 
         $treatedContent = $response->getTreatedContent();
@@ -762,10 +763,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param int|null $fragmentCount The number of highlight fragments to show.
      * @param int $noMatchSize
      * @param string $field
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @api
      */
-    public function highlight($fragmentSize, int $fragmentCount = null, int $noMatchSize = 150, string $field = 'neos_fulltext.*'): ElasticSearchQueryBuilder
+    public function highlight($fragmentSize, int $fragmentCount = null, int $noMatchSize = 150, string $field = 'neos_fulltext.*'): OpenSearchQueryResult
     {
         $this->request->highlight($fragmentSize, $fragmentCount, $noMatchSize, $field);
 
@@ -780,15 +781,15 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @param array $like An array of strings or documents
      * @param array $fields Fields to compare other docs with
      * @param array $options Additional options for the more_like_this quey
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    public function moreLikeThis(array $like, array $fields = [], array $options = []): ElasticSearchQueryBuilder
+    public function moreLikeThis(array $like, array $fields = [], array $options = []): OpenSearchQueryResult
     {
         $like = is_array($like) ? $like : [$like];
 
         $getDocumentDefinitionByNode = function (QueryInterface $request, NodeInterface $node): array {
             $request->queryFilter('term', ['neos_node_identifier' => $node->getIdentifier()]);
-            $response = $this->elasticSearchClient->getIndex()->request('GET', '/_search', [], $request->toArray())->getTreatedContent();
+            $response = $this->openSearchClient->getIndex()->request('GET', '/_search', [], $request->toArray())->getTreatedContent();
             $respondedDocuments = Arrays::getValueByPath($response, 'hits.hits');
             if (count($respondedDocuments) === 0) {
                 $this->logger->info(sprintf('The node with identifier %s was not found in the elasticsearch index.', $node->getIdentifier()), LogEnvironment::fromMethodName(__METHOD__));
@@ -829,14 +830,14 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * match the context of the given node and have it as parent node in their rootline.
      *
      * @param NodeInterface $contextNode
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws QueryBuildingException
      * @throws IllegalObjectTypeException
      * @api
      */
     public function query(NodeInterface $contextNode): QueryBuilderInterface
     {
-        $this->elasticSearchClient->setContextNode($contextNode);
+        $this->openSearchClient->setContextNode($contextNode);
 
         // on indexing, the neos_parent_path is tokenized to contain ALL parent path parts,
         // e.g. /foo, /foo/bar/, /foo/bar/baz; to speed up matching.. That's why we use a simple "term" filter here.
@@ -870,9 +871,9 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param string $path
      * @param mixed $requestPart
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    public function request(string $path, $requestPart): ElasticSearchQueryBuilder
+    public function request(string $path, $requestPart): OpenSearchQueryResult
     {
         $this->request->setByPath($path, $requestPart);
 
@@ -920,7 +921,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
                 $nodePath = current($nodePath);
             }
 
-            $node = $this->elasticSearchClient->getContextNode()->getNode($nodePath);
+            $node = $this->openSearchClient->getContextNode()->getNode($nodePath);
 
             if (!$node instanceof NodeInterface) {
                 $notConvertedNodePaths[] = $nodePath;
@@ -957,7 +958,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @return int
      * @throws Exception
      * @throws QueryBuildingException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function cacheLifetime(): int
@@ -983,7 +984,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      * @return int
      * @throws Exception
      * @throws QueryBuildingException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     protected function getNearestFutureDate(string $dateField): int
@@ -1019,7 +1020,7 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
 
         $requestArray = Arrays::setValueByPath($requestArray, 'query.bool.filter.bool.must_not', array_values($mustNot));
 
-        $result = $this->elasticSearchClient->getIndex()->request('GET', '/_search', [], $requestArray)->getTreatedContent();
+        $result = $this->openSearchClient->getIndex()->request('GET', '/_search', [], $requestArray)->getTreatedContent();
 
         return $convertDateResultToTimestamp(Arrays::getValueByPath($result, 'aggregations.minTime'));
     }
@@ -1031,10 +1032,10 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      *
      * @param string $method
      * @param array $arguments
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      * @throws Exception
      */
-    public function __call(string $method, array $arguments): ElasticSearchQueryBuilder
+    public function __call(string $method, array $arguments): OpenSearchQueryResult
     {
         if (!method_exists($this->request, $method)) {
             throw new Exception(sprintf('Method "%s" does not exist in the current Request object "%s"', $method, get_class($this->request)), 1486763515);
@@ -1070,6 +1071,6 @@ class ElasticSearchQueryBuilder implements QueryBuilderInterface, ProtectedConte
      */
     public function getIndexName(): string
     {
-        return $this->elasticSearchClient->getIndexName();
+        return $this->openSearchClient->getIndexName();
     }
 }

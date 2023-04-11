@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,24 +13,24 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Domain\Model\TargetContextPath;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\DocumentDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\SystemDriverInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorHandlingService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorStorageInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DimensionsService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\IndexNameService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
-use Flowpack\ElasticSearch\Domain\Model\Document as ElasticSearchDocument;
-use Flowpack\ElasticSearch\Domain\Model\Index;
-use Flowpack\ElasticSearch\Transfer\Exception\ApiException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Domain\Model\TargetContextPath;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\DocumentDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\SystemDriverInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorHandlingService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling\ErrorStorageInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DimensionsService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\IndexNameService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
+use Flowpack\OpenSearch\Domain\Model\Document as OpenSearchDocument;
+use Flowpack\OpenSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\Transfer\Exception\ApiException;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\Context;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
@@ -65,9 +65,9 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
 
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $searchClient;
+    protected $openSearchClient;
 
     /**
      * @Flow\Inject
@@ -113,13 +113,13 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
 
     /**
      * @var array
-     * @Flow\InjectConfiguration(package="Flowpack.ElasticSearch.ContentRepositoryAdaptor", path="indexing.batchSize")
+     * @Flow\InjectConfiguration(package="Flowpack.OpenSearch.ContentRepositoryAdaptor", path="indexing.batchSize")
      */
     protected $batchSize;
 
     /**
      * @var array
-     * @Flow\InjectConfiguration(package="Flowpack.ElasticSearch", path="indexes")
+     * @Flow\InjectConfiguration(package="Flowpack.OpenSearch", path="indexes")
      */
     protected $indexConfiguration;
 
@@ -197,7 +197,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      *
      * @return Index
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws Exception\ConfigurationException
      */
     public function getIndex(): Index
@@ -253,7 +253,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
                 $this->logger->debug(sprintf('Property "%s" not indexed because no configuration found, node type %s.', $propertyName, $node->getNodeType()->getName()), LogEnvironment::fromMethodName(__METHOD__));
             });
 
-            $document = new ElasticSearchDocument(
+            $document = new OpenSearchDocument(
                 $mappingType,
                 $nodePropertiesToBeStoredInIndex,
                 $documentIdentifier
@@ -322,7 +322,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      * @param NodeInterface $node
      * @param array|null $requests
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws FilesException
      */
     protected function toBulkRequest(NodeInterface $node, array $requests = null): void
@@ -343,7 +343,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      * @return void
      * @throws Exception
      * @throws FilesException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     public function removeNode(NodeInterface $node, string $targetWorkspaceName = null): void
     {
@@ -371,7 +371,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
     /**
      * @throws Exception
      * @throws Exception\ConfigurationException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     protected function flushIfNeeded(): void
     {
@@ -400,7 +400,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      *
      * @return void
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws Exception\ConfigurationException
      */
     public function flush(): void
@@ -478,7 +478,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      * @return void
      * @throws Exception
      * @throws ApiException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Exception
      */
     public function updateIndexAlias(): void

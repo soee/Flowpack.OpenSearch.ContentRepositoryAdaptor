@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,13 +14,13 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ViewHelpers\GetHitArrayForNodeViewHelper;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\ViewHelpers\GetHitArrayForNodeViewHelper;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for ElasticSearchQueryBuilder
+ * Testcase for OpenSearchQueryResult
  */
 class GetHitArrayForNodeViewHelperTest extends UnitTestCase
 {
@@ -35,7 +35,7 @@ class GetHitArrayForNodeViewHelperTest extends UnitTestCase
     protected $mockNode;
 
     /**
-     * @var ElasticSearchQueryResult|\PHPUnit_Framework_MockObject_MockObject $queryResult
+     * @var OpenSearchQueryResult|\PHPUnit_Framework_MockObject_MockObject $queryResult
      */
     protected $mockQueryResult;
 
@@ -43,7 +43,7 @@ class GetHitArrayForNodeViewHelperTest extends UnitTestCase
     {
         $this->viewHelper = new GetHitArrayForNodeViewHelper();
         $this->mockNode = $this->createMock(NodeInterface::class);
-        $this->mockQueryResult = $this->getMockBuilder(ElasticSearchQueryResult::class)->setMethods(['searchHitForNode'])->disableOriginalConstructor()->getMock();
+        $this->mockQueryResult = $this->getMockBuilder(OpenSearchQueryResult::class)->setMethods(['searchHitForNode'])->disableOriginalConstructor()->getMock();
     }
 
     /**

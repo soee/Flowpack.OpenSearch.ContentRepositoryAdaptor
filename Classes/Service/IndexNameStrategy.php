@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Service;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -25,7 +25,7 @@ class IndexNameStrategy implements IndexNameStrategyInterface
 {
     /**
      * @var string
-     * @Flow\InjectConfiguration(path="elasticSearch.indexName", package="Neos.ContentRepository.Search")
+     * @Flow\InjectConfiguration(path="openSearch.indexName", package="Neos.ContentRepository.Search")
      */
     protected $indexName;
 
@@ -37,7 +37,7 @@ class IndexNameStrategy implements IndexNameStrategyInterface
     {
         $name = $this->indexName;
         if ($name === '') {
-            throw new Exception\ConfigurationException('Index name can not be null, check Settings at path: Neos.ContentRepository.Search.elasticSearch.indexName', 1574327388);
+            throw new Exception\ConfigurationException('Index name can not be null, check Settings at path: Neos.ContentRepository.Search.openSearch.indexName', 1574327388);
         }
 
         return $name;

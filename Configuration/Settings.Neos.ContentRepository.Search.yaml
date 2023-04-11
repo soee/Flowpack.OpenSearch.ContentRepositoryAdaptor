@@ -8,50 +8,50 @@ Neos:
       # work with -- as unpublished changes are not indexed right away.
       indexAllWorkspaces: true
 
-      elasticSearch:
+      openSearch:
 
-        # API. name of the Elasticsearch index to use. Will create many indices prefixed by this indexName.
+        # API. name of the OpenSearch index to use. Will create many indices prefixed by this indexName.
         indexName: neoscr
 
       defaultConfigurationPerType:
 
         string:
-          elasticSearchMapping:
+          openSearchMapping:
             type: keyword
             ignore_above: 8191
 
         boolean:
-          elasticSearchMapping:
+          openSearchMapping:
             type: boolean
 
         array:
-          elasticSearchMapping:
+          openSearchMapping:
             type: keyword
             ignore_above: 8191
 
         integer:
-          elasticSearchMapping:
+          openSearchMapping:
             type: integer
 
         DateTime:
-          elasticSearchMapping:
+          openSearchMapping:
             type: date
             format: 'date_time_no_millis'
           indexing: '${(value ? Date.format(value, "Y-m-d\TH:i:sP") : null)}'
 
         'Neos\Media\Domain\Model\Asset':
-          elasticSearchMapping: '' # deliberately don't map or index this
+          openSearchMapping: '' # deliberately don't map or index this
 
         'array<Neos\Media\Domain\Model\Asset>':
-          elasticSearchMapping: '' # deliberately don't map or index this
+          openSearchMapping: '' # deliberately don't map or index this
 
         'Neos\Media\Domain\Model\ImageInterface':
-          elasticSearchMapping: '' # deliberately don't map or index this
+          openSearchMapping: '' # deliberately don't map or index this
 
         'references':
-          elasticSearchMapping:
+          openSearchMapping:
             type: keyword # an array of keywords, to be precise
 
         'reference':
-          elasticSearchMapping:
+          openSearchMapping:
             type: keyword

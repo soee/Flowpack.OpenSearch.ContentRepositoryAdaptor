@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Command;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,11 +13,11 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DimensionsService;
-use Flowpack\ElasticSearch\Domain\Model\Mapping;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DimensionsService;
+use Flowpack\OpenSearch\Domain\Model\Mapping;
 use Neos\ContentRepository\Domain\Service\ContentDimensionCombinator;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
@@ -78,10 +78,10 @@ class NodeIndexMappingCommandController extends CommandController
     }
 
     /**
-     * Show the mapping which would be sent to the ElasticSearch server
+     * Show the mapping which would be sent to the OpenSearch server
      *
      * @return void
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     public function mappingCommand(): void
     {

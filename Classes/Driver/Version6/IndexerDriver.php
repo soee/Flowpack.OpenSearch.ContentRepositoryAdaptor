@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,10 +14,10 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\AbstractIndexerDriver;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface;
-use Flowpack\ElasticSearch\Domain\Model\Document as ElasticSearchDocument;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\AbstractIndexerDriver;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface;
+use Flowpack\OpenSearch\Domain\Model\Document as OpenSearchDocument;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
 

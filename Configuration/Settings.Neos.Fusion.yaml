@@ -1,4 +1,4 @@
 Neos:
   Fusion:
     defaultContext:
-      SearchResult: Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\SearchResultHelper
+      SearchResult: Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\SearchResultHelper

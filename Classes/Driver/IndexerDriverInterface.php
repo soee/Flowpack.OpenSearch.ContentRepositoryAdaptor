@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,7 +14,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\Domain\Model\Document as ElasticSearchDocument;
+use Flowpack\OpenSearch\Domain\Model\Document as OpenSearchDocument;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
@@ -27,11 +27,11 @@ interface IndexerDriverInterface
      *
      * @param string $indexName
      * @param NodeInterface $node
-     * @param ElasticSearchDocument $document
+     * @param OpenSearchDocument $document
      * @param array $documentData
      * @return array
      */
-    public function document(string $indexName, NodeInterface $node, ElasticSearchDocument $document, array $documentData): array;
+    public function document(string $indexName, NodeInterface $node, OpenSearchDocument $document, array $documentData): array;
 
     /**
      * Generate the query to index the fulltext of the document

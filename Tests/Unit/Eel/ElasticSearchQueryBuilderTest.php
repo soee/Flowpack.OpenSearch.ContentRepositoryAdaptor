@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,10 +13,10 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Query\FilteredQuery;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
@@ -24,14 +24,11 @@ use Neos\ContentRepository\Domain\Service\Context;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Testcase for ElasticSearchQueryBuilder
+ * Testcase for OpenSearchQueryResult
  */
-class ElasticSearchQueryBuilderTest extends UnitTestCase
+class OpenSearchQueryResultTest extends UnitTestCase
 {
-    /**
-     * @var ElasticSearchQueryBuilder
-     */
-    protected $queryBuilder;
+    protected OpenSearchQueryResult $queryBuilder;
 
     public function setUp(): void
     {
@@ -48,10 +45,10 @@ class ElasticSearchQueryBuilderTest extends UnitTestCase
 
         $mockWorkspace->method('getName')->willReturn('user-foo');
 
-        $elasticsearchClient = $this->createMock(ElasticSearchClient::class);
-        $elasticsearchClient->method('getContextNode')->willReturn($node);
+        $openSearchClient = $this->createMock(OpenSearchClient::class);
+        $openSearchClient->method('getContextNode')->willReturn($node);
 
-        $this->queryBuilder = new ElasticSearchQueryBuilder();
+        $this->queryBuilder = new OpenSearchQueryResult();
 
         $request = [
             'query' => [
@@ -94,7 +91,7 @@ class ElasticSearchQueryBuilderTest extends UnitTestCase
             'fields' => ['neos_fulltext.h1^2']
         ];
 
-        $this->inject($this->queryBuilder, 'elasticSearchClient', $elasticsearchClient);
+        $this->inject($this->queryBuilder, 'openSearchClient', $openSearchClient);
         $this->inject($this->queryBuilder, 'request', new FilteredQuery($request, $unsupportedFieldsInCountRequest, $queryStringParameters));
 
         $query = new FilteredQuery($this->queryBuilder->getRequest()->toArray(), [], []);

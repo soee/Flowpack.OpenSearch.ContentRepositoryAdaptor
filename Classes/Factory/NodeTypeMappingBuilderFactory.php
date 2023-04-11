@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,8 +14,8 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
 use Neos\Flow\Annotations as Flow;
 
 /**

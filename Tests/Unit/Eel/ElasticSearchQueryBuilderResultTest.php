@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,17 +13,15 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQuery;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQuery;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for ElasticSearchQueryBuilder
+ * Testcase for OpenSearchQueryResult
  */
-class ElasticSearchQueryBuilderResultTest extends UnitTestCase
+class OpenSearchQueryResultResultTest extends UnitTestCase
 {
-
     /**
      * @test
      */
@@ -33,12 +31,12 @@ class ElasticSearchQueryBuilderResultTest extends UnitTestCase
             'nodes' => ['some', 'nodes']
         ];
 
-        $queryBuilder = $this->getMockBuilder(ElasticSearchQueryBuilder::class)->setMethods(['fetch'])->getMock();
+        $queryBuilder = $this->getMockBuilder(OpenSearchQueryResult::class)->setMethods(['fetch'])->getMock();
         $queryBuilder->method('fetch')->willReturn($resultArrayWithoutAggregations);
 
-        $esQuery = new ElasticSearchQuery($queryBuilder);
+        $esQuery = new OpenSearchQuery($queryBuilder);
 
-        $queryResult = new ElasticSearchQueryResult($esQuery);
+        $queryResult = new OpenSearchQueryResult($esQuery);
 
         $actual = $queryResult->getAggregations();
 

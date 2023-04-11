@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\AssetExtraction;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\AssetExtraction;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -16,7 +16,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\AssetExtraction;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Search\AssetExtraction\AssetExtractorInterface;
 use Neos\ContentRepository\Search\Dto\AssetContent;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
 use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Media\Domain\Model\AssetInterface;
@@ -30,9 +30,9 @@ class IngestAttachmentAssetExtractor implements AssetExtractorInterface
 {
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $elasticsearchClient;
+    protected $openSearchClient;
 
     /**
      * @Flow\Inject
@@ -47,7 +47,7 @@ class IngestAttachmentAssetExtractor implements AssetExtractorInterface
     protected $logger;
 
     /**
-     * @Flow\InjectConfiguration(package="Flowpack.ElasticSearch.ContentRepositoryAdaptor", path="indexing.assetExtraction.maximumFileSize")
+     * @Flow\InjectConfiguration(package="Flowpack.OpenSearch.ContentRepositoryAdaptor", path="indexing.assetExtraction.maximumFileSize")
      * @var int
      */
     protected $maximumFileSize;
@@ -57,8 +57,8 @@ class IngestAttachmentAssetExtractor implements AssetExtractorInterface
      *
      * @param AssetInterface $asset
      * @return AssetContent
-     * @throws \Flowpack\ElasticSearch\Transfer\Exception
-     * @throws \Flowpack\ElasticSearch\Transfer\Exception\ApiException
+     * @throws \Flowpack\OpenSearch\Transfer\Exception
+     * @throws \Flowpack\OpenSearch\Transfer\Exception\ApiException
      * @throws \Neos\Flow\Http\Exception
      */
     public function extract(AssetInterface $asset): AssetContent
@@ -92,14 +92,14 @@ class IngestAttachmentAssetExtractor implements AssetExtractorInterface
             ]
         ];
 
-        $result = $this->elasticsearchClient->request('POST', '_ingest/pipeline/_simulate', [], json_encode($request))->getTreatedContent();
+        $result = $this->openSearchClient->request('POST', '_ingest/pipeline/_simulate', [], json_encode($request))->getTreatedContent();
 
         if (is_array($result)) {
             $extractedAsset = Arrays::getValueByPath($result, 'docs.0.doc._source.attachment');
         }
 
         if (!is_array($extractedAsset)) {
-            $this->logger->error(sprintf('Error while extracting fulltext data from file "%s". See Elasticsearch error log line for details.', $asset->getResource()->getFilename()), LogEnvironment::fromMethodName(__METHOD__));
+            $this->logger->error(sprintf('Error while extracting fulltext data from file "%s". See OpenSearch error log line for details.', $asset->getResource()->getFilename()), LogEnvironment::fromMethodName(__METHOD__));
         } else {
             $this->logger->debug(sprintf('Extracted asset %s of type %s. Extracted %s characters of content', $asset->getResource()->getFilename(), $extractedAsset['content_type'] ?? '-no-content-type-', $extractedAsset['content_length'] ?? '0'), LogEnvironment::fromMethodName(__METHOD__));
         }

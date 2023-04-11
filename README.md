@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.com/Flowpack/Flowpack.ElasticSearch.ContentRepositoryAdaptor.svg?branch=master)](https://travis-ci.com/Flowpack/Flowpack.ElasticSearch.ContentRepositoryAdaptor) [![Latest Stable Version](https://poser.pugx.org/flowpack/elasticsearch-contentrepositoryadaptor/v/stable)](https://packagist.org/packages/flowpack/elasticsearch-contentrepositoryadaptor) [![Total Downloads](https://poser.pugx.org/flowpack/elasticsearch-contentrepositoryadaptor/downloads)](https://packagist.org/packages/flowpack/elasticsearch-contentrepositoryadaptor)
+[![Build Status](https://travis-ci.com/Flowpack/Flowpack.OpenSearch.ContentRepositoryAdaptor.svg?branch=master)](https://travis-ci.com/Flowpack/Flowpack.OpenSearch.ContentRepositoryAdaptor) [![Latest Stable Version](https://poser.pugx.org/flowpack/elasticsearch-contentrepositoryadaptor/v/stable)](https://packagist.org/packages/flowpack/elasticsearch-contentrepositoryadaptor) [![Total Downloads](https://poser.pugx.org/flowpack/elasticsearch-contentrepositoryadaptor/downloads)](https://packagist.org/packages/flowpack/elasticsearch-contentrepositoryadaptor)
 
-# Neos Elasticsearch Adapter
+# Neos OpenSearch Adapter
 
-This project connects the Neos Content Repository to Elasticsearch; enabling two
+This project connects the Neos Content Repository to OpenSearch; enabling two
 main functionalities:
 
 * finding Nodes in Fusion / Eel by arbitrary queries
@@ -19,19 +19,19 @@ This documentation is structured in the following parts:
 # Installation
 
 ```
-composer require 'flowpack/elasticsearch-contentrepositoryadaptor'
-// Not required, but can be used to learn how to integration the flowpack/elasticsearch-contentrepositoryadaptor in your project
+composer require 'flowpack/opensearch-contentrepositoryadaptor'
+// Not required, but can be used to learn how to integration the flowpack/opensearch-contentrepositoryadaptor in your project
 composer require 'flowpack/searchplugin'
 ```
-Ensure to update `<your-elasticsearch>/config/elasticsearch.yml` as explained below; then start Elasticsearch.
+Ensure to update `<your-opensearch>/config/opensearch.yml` as explained below; then start OpenSearch.
 
 Finally, run `./flow nodeindex:build`, and add the search plugin to your page. It should "just work".
 
 ## Relevant Packages
 
 * [Neos.ContentRepository.Search](https://www.neos.io/download-and-extend/packages/neos/neos-content-repository-search.html): provides common functionality for searching Neos Content Repository nodes. Does not contain a search backend.
-* [Flowpack.ElasticSearch](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-elasticsearch.html): provides common code for working with Elasticsearch
-* [Flowpack.ElasticSearch.ContentRepositoryAdaptor](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-elasticsearch-contentrepositoryadaptor.html): this package
+* [Flowpack.OpenSearch](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-elasticsearch.html): provides common code for working with Elasticsearch
+* [Flowpack.OpenSearch.ContentRepositoryAdaptor](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-elasticsearch-contentrepositoryadaptor.html): this package
 * [Flowpack.SimpleSearch.ContentRepositoryAdaptor](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-simplesearch-contentrepositoryadaptor.html): an alternative search backend (to be used instead of this package); storing the search index in SQLite
 * [Flowpack.SearchPlugin](https://www.neos.io/download-and-extend/packages/flowpack/flowpack-searchplugin.html): search plugin for Neos
 
@@ -187,12 +187,12 @@ Which dimension combinations are available in your system and which hashes they 
 ### Configurations per property (index field)
 
 Then, you can change the analyzers on a per-field level; or e.g. reconfigure the _all field with the following snippet
-in the NodeTypes.yaml. Generally this works by defining the global mapping at `[nodeType].search.elasticSearchMapping`:
+in the NodeTypes.yaml. Generally this works by defining the global mapping at `[nodeType].search.openSearchMapping`:
 
 ```yaml
 'Neos.Neos:Node':
   search:
-    elasticSearchMapping:
+    openSearchMapping:
       myProperty:
         analyzer: custom_french_analyzer
 ```
@@ -238,7 +238,7 @@ Furthermore, this can be overridden using the `properties.[....].search` path in
 
 This configuration contains two parts:
 
-* Underneath `elasticSearchMapping`, the Elasticsearch property mapping can be defined.
+* Underneath `openSearchMapping`, the Elasticsearch property mapping can be defined.
 * Underneath `indexing`, an Eel expression which processes the value before indexing has to be
   specified. It has access to the current `value` and the current `node`.
 
@@ -252,7 +252,7 @@ Neos:
 
         # strings should just be indexed with their simple value.
         string:
-          elasticSearchMapping:
+          openSearchMapping:
             type: string
           indexing: '${value}'
 ```
@@ -268,7 +268,7 @@ Neos:
 
         # A date should be mapped differently, and in this case we want to use a date format which
         # Elasticsearch understands
-        elasticSearchMapping:
+        openSearchMapping:
           type: DateTime
           format: 'date_time_no_millis'
         indexing: '${(node.hiddenBeforeDateTime ? Date.format(node.hiddenBeforeDateTime, "Y-m-d\TH:i:sP") : null)}'
@@ -338,7 +338,7 @@ currently configured in PHP, the configuration for any property in a node which 
   properties:
     date:
       search:
-        elasticSearchMapping:
+        openSearchMapping:
           type: 'date'
           format: 'date_time_no_millis'
         indexing: '${(value ? Date.format(value, "Y-m-d\TH:i:sP") : null)}'
@@ -368,7 +368,7 @@ Neos:
     Search:
       defaultConfigurationPerType:
         'Neos\Media\Domain\Model\Asset':
-          elasticSearchMapping:
+          openSearchMapping:
             type: text
           indexing: ${Indexing.extractAssetContent(value)}
 ```
@@ -644,7 +644,7 @@ for all your filterable properties, or else filtering won't work on them properl
       type: string
       defaultValue: ''
       search:
-        elasticSearchMapping:
+        openSearchMapping:
           type: keyword
 ```
 
@@ -698,7 +698,7 @@ First of all you have to define a property in your NodeTypes.yaml for your node 
     'latlng':
       type: string
       search:
-        elasticSearchMapping:
+        openSearchMapping:
           type: "geo_point"
 ```
 
@@ -723,7 +723,7 @@ Now you can paginate that nodes in your template. To get your actually distance 
 the `GetHitArrayForNodeViewHelper`:
 ```
 {namespace cr=Neos\ContentRepository\Search\ViewHelpers}
-{namespace es=Flowpack\ElasticSearch\ContentRepositoryAdaptor\ViewHelpers}
+{namespace es=Flowpack\OpenSearch\ContentRepositoryAdaptor\ViewHelpers}
 
 <cr:widget.paginate query="{nodes}" as="paginatedNodes">
     <f:for each="{paginatedNodes}" as="singleNode">
@@ -844,12 +844,12 @@ In order to understand what's going on, the following might be helpful:
 
 **Settings.yaml**
 
-1. Change the base namespace for configuration from `Flowpack.ElasticSearch.ContentRepositoryAdaptor`
+1. Change the base namespace for configuration from `Flowpack.OpenSearch.ContentRepositoryAdaptor`
    to `Neos.ContentRepository.Search`. All further adjustments are made underneath this namespace:
 2. (If it exists in your configuration:) Move `indexName` to `elasticSearch.indexName`
 3. (If it exists in your configuration:) Move `log` to `elasticSearch.log`
 4. search for `mapping` (inside `defaultConfigurationPerType.<typeName>`) and replace it by
-   `elasticSearchMapping`.
+   `openSearchMapping`.
 5. Inside the `indexing` expressions (at `defaultConfigurationPerType.<typeName>`), replace
    `ElasticSearch.` by `Indexing.`.
 
@@ -858,6 +858,6 @@ In order to understand what's going on, the following might be helpful:
 1. Replace `elasticSearch` by `search`. This replaces both `<YourNodeType>.elasticSearch`
    and `<YourNodeType>.properties.<propertyName>.elasticSearch`.
 2. search for `mapping` (inside `<YourNodeType>.properties.<propertyName>.search`) and replace it by
-   `elasticSearchMapping`.
+   `openSearchMapping`.
 3. Replace `ElasticSeach.fulltext` by `Indexing`
 4. Search for `ElasticSearch.` (inside the `indexing` expressions) and replace them by `Indexing.`

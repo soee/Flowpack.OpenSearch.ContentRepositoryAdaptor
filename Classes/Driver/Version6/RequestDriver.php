@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,9 +13,9 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\AbstractDriver;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface;
-use Flowpack\ElasticSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\AbstractDriver;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface;
+use Flowpack\OpenSearch\Domain\Model\Index;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -27,7 +27,7 @@ class RequestDriver extends AbstractDriver implements RequestDriverInterface
 {
     /**
      * {@inheritdoc}
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function bulk(Index $index, $request): array

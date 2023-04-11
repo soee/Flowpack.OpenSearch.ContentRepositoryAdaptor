@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Service;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional\Service;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional\Servi
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\NodeTypeIndexingConfiguration;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -41,11 +41,11 @@ class NodeTypeIndexingConfigurationTest extends FunctionalTestCase
     {
         return [
             'notIndexable' => [
-                'nodeTypeName' => 'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type1',
+                'nodeTypeName' => 'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type1',
                 'expected' => false,
             ],
             'indexable' => [
-                'nodeTypeName' => 'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type2',
+                'nodeTypeName' => 'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type2',
                 'expected' => true,
             ],
         ];
@@ -57,7 +57,7 @@ class NodeTypeIndexingConfigurationTest extends FunctionalTestCase
      *
      * @param string $nodeTypeName
      * @param bool $expected
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      * @throws \Neos\ContentRepository\Exception\NodeTypeNotFoundException
      */
     public function isIndexable(string $nodeTypeName, bool $expected): void
@@ -71,7 +71,7 @@ class NodeTypeIndexingConfigurationTest extends FunctionalTestCase
      *
      * @param string $nodeTypeName
      * @param bool $expected
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
      */
     public function getIndexableConfiguration(string $nodeTypeName, bool $expected): void
     {

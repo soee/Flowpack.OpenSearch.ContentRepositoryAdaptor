@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Command;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,12 +13,12 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\SearchResultHelper;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\SearchResultHelper;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\Context;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
@@ -41,9 +41,9 @@ class SearchCommandController extends CommandController
 
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $elasticSearchClient;
+    protected $openSearchClient;
 
     /**
      * This commnd can be used to test and debug
@@ -67,14 +67,14 @@ class SearchCommandController extends CommandController
             $this->sendAndExit(1);
         }
 
-        $queryBuilder = new ElasticSearchQueryBuilder();
+        $queryBuilder = new OpenSearchQueryResult();
         $queryBuilder = $queryBuilder->query($contextNode)
             ->fulltext($searchWord)
             ->limit(10)
             ->termSuggestions($searchWord)
             ->log(__CLASS__);
 
-        /** @var ElasticSearchQueryResult $results */
+        /** @var OpenSearchQueryResult $results */
         $results = $queryBuilder->execute();
 
         $didYouMean = (new SearchResultHelper())->didYouMean($results);
@@ -85,7 +85,7 @@ class SearchCommandController extends CommandController
         $this->outputLine();
         $this->outputLine('<info>Results</info>');
         $this->outputLine('Number of result(s): %d', [$queryBuilder->count()]);
-        $this->outputLine('Index name: %s', [$this->elasticSearchClient->getIndexName()]);
+        $this->outputLine('Index name: %s', [$this->openSearchClient->getIndexName()]);
         $this->outputResults($results);
         $this->outputLine();
     }
@@ -99,7 +99,7 @@ class SearchCommandController extends CommandController
      * @throws Exception
      * @throws IllegalObjectTypeException
      * @throws QueryBuildingException
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     public function viewNodeCommand(string $identifier, ?string $dimensions = null, string $field = ''): void
@@ -111,7 +111,7 @@ class SearchCommandController extends CommandController
 
         $context = $this->createContext($dimensions);
 
-        $queryBuilder = new ElasticSearchQueryBuilder();
+        $queryBuilder = new OpenSearchQueryResult();
         $queryBuilder->query($context->getRootNode());
         $queryBuilder->exactMatch('neos_node_identifier', $identifier);
 
@@ -123,7 +123,7 @@ class SearchCommandController extends CommandController
 
             foreach ($queryBuilder->execute() as $node) {
                 $this->outputLine('<b>%s</b>', [(string)$node]);
-                $data = $queryBuilder->getFullElasticSearchHitForNode($node);
+                $data = $queryBuilder->getFullOpenSearchHitForNode($node);
 
                 if ($field !== '') {
                     $data = Arrays::getValueByPath($data, '_source.' . $field);
@@ -139,9 +139,9 @@ class SearchCommandController extends CommandController
     }
 
     /**
-     * @param ElasticSearchQueryResult $result
+     * @param OpenSearchQueryResult $result
      */
-    private function outputResults(ElasticSearchQueryResult $result): void
+    private function outputResults(OpenSearchQueryResult $result): void
     {
         $results = array_map(static function (NodeInterface $node) {
             $properties = [];

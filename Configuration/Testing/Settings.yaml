@@ -1,12 +1,12 @@
 Neos:
   ContentRepository:
     Search:
-      elasticSearch:
+      openSearch:
         indexName: neoscr_testing
         log:
           backendOptions:
             fileBackend:
-              logFileURL: '%FLOW_PATH_DATA%Logs/ElasticSearch_Testing.log'
+              logFileURL: '%FLOW_PATH_DATA%Logs/OpenSearch_Testing.log'
               severityThreshold: '%LOG_DEBUG%'
       realtimeIndexing:
         enabled: false
@@ -14,11 +14,11 @@ Neos:
       defaultConfigurationPerNodeType:
         '*':
           indexed: true
-        'Flowpack.ElasticSearch.ContentRepositoryAdaptor:Type1':
+        'Flowpack.OpenSearch.ContentRepositoryAdaptor:Type1':
           indexed: false
 
 Flowpack:
-  ElasticSearch:
+  OpenSearch:
     ContentRepositoryAdaptor:
       command:
         useSubProcesses: false

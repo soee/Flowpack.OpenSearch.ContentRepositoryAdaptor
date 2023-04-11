@@ -1,14 +1,13 @@
 {
-    "name": "flowpack/elasticsearch-contentrepositoryadaptor",
+    "name": "flowpack/opensearch-contentrepositoryadaptor",
     "type": "neos-package",
-    "description": "This package provides functionality for using Elasticsearch on top of Neos.ContentRepository.Search",
+    "description": "This package provides functionality for using Opensearch on top of Neos.ContentRepository.Search",
     "homepage": "http://flowpack.org/",
     "license": ["LGPL-3.0-only"],
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-json": "*",
-
-        "flowpack/elasticsearch": "^5.0 || dev-master",
+        "flowpack/opensearch": "^5.0 || dev-master",
         "neos/content-repository": "^7.0 || ^8.0 || dev-master",
         "neos/content-repository-search": "^4.0 || dev-master",
         "neos/eel": "^7.0 || ^8.0 || dev-master",
@@ -18,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Flowpack\\ElasticSearch\\ContentRepositoryAdaptor\\": "Classes"
+            "Flowpack\\OpenSearch\\ContentRepositoryAdaptor\\": "Classes"
         }
     },
     "extra": {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\ViewHelpers;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\ViewHelpers;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,13 +14,13 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\ViewHelpers;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper;
 use Neos\Utility\Arrays;
 
 /**
- * View helper to get the raw "hits" array of an ElasticSearchQueryResult for a
+ * View helper to get the raw "hits" array of an OpenSearchQueryResult for a
  * specific node.
  *
  * = Examples =
@@ -43,12 +43,12 @@ use Neos\Utility\Arrays;
 class GetHitArrayForNodeViewHelper extends AbstractViewHelper
 {
     /**
-     * @param ElasticSearchQueryResult $queryResultObject
+     * @param OpenSearchQueryResult $queryResultObject
      * @param NodeInterface $node
      * @param array|string $path
      * @return mixed
      */
-    public function render(ElasticSearchQueryResult $queryResultObject, NodeInterface $node, $path = null)
+    public function render(OpenSearchQueryResult $queryResultObject, NodeInterface $node, $path = null)
     {
         $hitArray = $queryResultObject->searchHitForNode($node);
 

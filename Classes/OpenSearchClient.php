@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,25 +13,25 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DimensionsService;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\IndexNameStrategyInterface;
-use Flowpack\ElasticSearch\Domain\Model\Client;
-use Flowpack\ElasticSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\ConfigurationException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DimensionsService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\IndexNameStrategyInterface;
+use Flowpack\OpenSearch\Domain\Model\Client;
+use Flowpack\OpenSearch\Domain\Model\Index;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * The elasticsearch client to be used by the content repository adapter.
+ * The OpenSearch client to be used by the content repository adapter.
  *
  * Used to:
  *
- * - make the ElasticSearch Client globally available
+ * - make the OpenSearch Client globally available
  * - allow to access the index to be used for reading/writing in a global way
  *
  * @Flow\Scope("singleton")
  */
-class ElasticSearchClient extends Client
+class OpenSearchClient extends Client
 {
     /**
      * @var IndexNameStrategyInterface
@@ -108,9 +108,8 @@ class ElasticSearchClient extends Client
      * Get the index name to be used
      *
      * @return string
-     * @throws Exception
      * @throws ConfigurationException
-     * @todo Add a contraints, if the system use content dimensions, the dimensionsHash MUST be set
+     * @todo Add a constraints, if the system use content dimensions, the dimensionsHash MUST be set
      */
     public function getIndexName(): string
     {
@@ -123,7 +122,6 @@ class ElasticSearchClient extends Client
 
     /**
      * @return string
-     * @throws Exception
      * @throws ConfigurationException
      */
     public function getIndexNamePrefix(): string
@@ -138,11 +136,11 @@ class ElasticSearchClient extends Client
 
     /**
      * Retrieve the index to be used for querying or on-the-fly indexing.
-     * In Elasticsearch, this index is an *alias* to the currently used index.
+     * In OpenSearch, this index is an *alias* to the currently used index.
      *
-     * @return \Flowpack\ElasticSearch\Domain\Model\Index
+     * @return \Flowpack\OpenSearch\Domain\Model\Index
      * @throws Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws ConfigurationException
      */
     public function getIndex(): Index

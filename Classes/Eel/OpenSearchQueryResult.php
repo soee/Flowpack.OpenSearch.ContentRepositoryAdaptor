@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -18,12 +18,12 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Persistence\QueryInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 
-class ElasticSearchQueryResult implements QueryResultInterface, ProtectedContextAwareInterface
+class OpenSearchQueryResult implements QueryResultInterface, ProtectedContextAwareInterface
 {
     /**
-     * @var ElasticSearchQuery
+     * @var OpenSearchQuery
      */
-    protected $elasticSearchQuery;
+    protected $openSearchQuery;
 
     /**
      * @var array
@@ -40,23 +40,23 @@ class ElasticSearchQueryResult implements QueryResultInterface, ProtectedContext
      */
     protected $count;
 
-    public function __construct(ElasticSearchQuery $elasticSearchQuery)
+    public function __construct(OpenSearchQuery $openSearchQuery)
     {
-        $this->elasticSearchQuery = $elasticSearchQuery;
+        $this->openSearchQuery = $openSearchQuery;
     }
 
     /**
      * Initialize the results by really executing the query
      *
      * @return void
-     * @throws \Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      * @throws \Neos\Flow\Http\Exception
      */
     protected function initialize(): void
     {
         if ($this->result === null) {
-            $queryBuilder = $this->elasticSearchQuery->getQueryBuilder();
+            $queryBuilder = $this->openSearchQuery->getQueryBuilder();
             $this->result = $queryBuilder->fetch();
             $this->nodes = $this->result['nodes'];
             $this->count = $queryBuilder->getTotalItems();
@@ -64,11 +64,11 @@ class ElasticSearchQueryResult implements QueryResultInterface, ProtectedContext
     }
 
     /**
-     * @return ElasticSearchQuery
+     * @return OpenSearchQuery
      */
     public function getQuery(): QueryInterface
     {
-        return clone $this->elasticSearchQuery;
+        return clone $this->openSearchQuery;
     }
 
     /**
@@ -181,12 +181,12 @@ class ElasticSearchQueryResult implements QueryResultInterface, ProtectedContext
 
     /**
      * {@inheritdoc}
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     public function count()
     {
         if ($this->count === null) {
-            $this->count = $this->elasticSearchQuery->getQueryBuilder()->count();
+            $this->count = $this->openSearchQuery->getQueryBuilder()->count();
         }
 
         return $this->count;
@@ -246,23 +246,23 @@ class ElasticSearchQueryResult implements QueryResultInterface, ProtectedContext
     }
 
     /**
-     * Returns the Elasticsearch "hit" (e.g. the raw content being transferred back from Elasticsearch)
+     * Returns the OpenSearch "hit" (e.g. the raw content being transferred back from OpenSearch)
      * for the given node.
      *
      * Can be used for example to access highlighting information.
      *
      * @param NodeInterface $node
-     * @return array the Elasticsearch hit, or NULL if it does not exist.
+     * @return array the OpenSearch hit, or NULL if it does not exist.
      * @api
      */
     public function searchHitForNode(NodeInterface $node): ?array
     {
-        return $this->elasticSearchQuery->getQueryBuilder()->getFullElasticSearchHitForNode($node);
+        return $this->openSearchQuery->getQueryBuilder()->getFullOpenSearchHitForNode($node);
     }
 
     /**
      * Returns the array with all sort values for a given node. The values are fetched from the raw content
-     * Elasticsearch returns within the hit data
+     * OpenSearch returns within the hit data
      *
      * @param NodeInterface $node
      * @return array

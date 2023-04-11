@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,7 +14,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
 
 /**
  * Query Interface
@@ -82,7 +82,7 @@ interface QueryInterface
     public function fulltext(string $searchWord, array $options = []): void;
 
     /**
-     * Match the search word against the fulltext index using the elasticsearch
+     * Match the search word against the fulltext index using the OpenSearch
      * [simple query string query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)
      *
      * @param string $searchWord
@@ -160,7 +160,7 @@ interface QueryInterface
     /**
      * Append $data to the given array at $path inside $this->request.
      *
-     * Low-level method to manipulate the Elasticsearch Query
+     * Low-level method to manipulate the OpenSearch Query
      *
      * @param string $path
      * @param array $data
@@ -170,7 +170,7 @@ interface QueryInterface
     public function appendAtPath(string $path, array $data): void;
 
     /**
-     * Modify a part of the Elasticsearch Request denoted by $path, merging together
+     * Modify a part of the OpenSearch Request denoted by $path, merging together
      * the existing values and the passed-in values.
      *
      * @param string $path

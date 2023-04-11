@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception;
 use InvalidArgumentException;
 use JsonException;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
@@ -22,13 +22,13 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 
 /**
- * This ElasticSearchQuery object is just used inside ElasticSearchQueryResult->getQuery(), so that pagination
- * widgets etc work in the same manner for Elasticsearch results.
+ * This OpenSearchQuery object is just used inside OpenSearchQueryResult->getQuery(), so that pagination
+ * widgets etc work in the same manner for OpenSearch results.
  */
-class ElasticSearchQuery implements QueryInterface
+class OpenSearchQuery implements QueryInterface
 {
     /**
-     * @var ElasticSearchQueryBuilder
+     * @var OpenSearchQueryResult
      */
     protected $queryBuilder;
 
@@ -38,32 +38,32 @@ class ElasticSearchQuery implements QueryInterface
     protected static $runtimeQueryResultCache;
 
     /**
-     * ElasticSearchQuery constructor.
+     * OpenSearchQuery constructor.
      *
-     * @param ElasticSearchQueryBuilder $elasticSearchQueryBuilder
+     * @param OpenSearchQueryBuilder $openSearchQueryBuilder
      */
-    public function __construct(ElasticSearchQueryBuilder $elasticSearchQueryBuilder)
+    public function __construct(OpenSearchQueryBuilder $openSearchQueryBuilder)
     {
-        $this->queryBuilder = $elasticSearchQueryBuilder;
+        $this->queryBuilder = $openSearchQueryBuilder;
     }
 
     /**
      * Executes the query and returns the result.
      *
      * @param bool $cacheResult If the result cache should be used
-     * @return ElasticSearchQueryResult The query result
+     * @return OpenSearchQueryResult The query result
      * @throws Exception
      * @throws Exception\ConfigurationException
      * @throws JsonException
      * @api
      */
-    public function execute($cacheResult = false): QueryResultInterface
+    public function execute(bool $cacheResult = false): QueryResultInterface
     {
         $queryHash = md5($this->queryBuilder->getIndexName() . json_encode($this->queryBuilder->getRequest(), JSON_THROW_ON_ERROR));
         if ($cacheResult === true && isset(self::$runtimeQueryResultCache[$queryHash])) {
             return self::$runtimeQueryResultCache[$queryHash];
         }
-        $queryResult = new ElasticSearchQueryResult($this);
+        $queryResult = new OpenSearchQueryResult($this);
         self::$runtimeQueryResultCache[$queryHash] = $queryResult;
 
         return $queryResult;
@@ -292,9 +292,9 @@ class ElasticSearchQuery implements QueryInterface
     }
 
     /**
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    public function getQueryBuilder(): ElasticSearchQueryBuilder
+    public function getQueryBuilder(): OpenSearchQueryResult
     {
         return $this->queryBuilder;
     }

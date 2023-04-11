@@ -1,51 +1,51 @@
 Neos\ContentRepository\Search\Search\QueryBuilderInterface:
-  className: Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder
+  className: Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult
 
 Neos\ContentRepository\Search\Indexer\NodeIndexerInterface:
-  className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer'
+  className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer'
 
 Neos\ContentRepository\Search\AssetExtraction\AssetExtractorInterface:
-  className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\AssetExtraction\IngestAttachmentAssetExtractor'
+  className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\AssetExtraction\IngestAttachmentAssetExtractor'
 
-'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface':
-  className: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\NodePathBasedDocumentIdentifierGenerator'
+'Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\DocumentIdentifierGeneratorInterface':
+  className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\DocumentIdentifier\NodePathBasedDocumentIdentifierGenerator'
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\QueryInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\QueryInterface:
   scope: prototype
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\QueryFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\QueryFactory'
   factoryMethodName: createQuery
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\DocumentDriverInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\DocumentDriverInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
   factoryMethodName: createDocumentDriver
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexerDriverInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
   factoryMethodName: createIndexerDriver
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\IndexDriverInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
   factoryMethodName: createIndexManagementDriver
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\RequestDriverInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
   factoryMethodName: createRequestDriver
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\SystemDriverInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\SystemDriverInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\DriverFactory'
   factoryMethodName: createSystemDriver
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\NodeTypeMappingBuilderInterface:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Factory\NodeTypeMappingBuilderFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Factory\NodeTypeMappingBuilderFactory'
   factoryMethodName: createNodeTypeMappingBuilder
 
-Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient:
+Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient:
   scope: singleton
-  factoryObjectName: 'Flowpack\ElasticSearch\ContentRepositoryAdaptor\Client\ClientFactory'
+  factoryObjectName: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Client\ClientFactory'
   factoryMethodName: create

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Query;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\Version6\Query;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,8 +13,8 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\Version6\Query;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver\AbstractQuery;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver\AbstractQuery;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\QueryBuildingException;
 
 /**
  * Filtered query for Elasticsearch version 6.x

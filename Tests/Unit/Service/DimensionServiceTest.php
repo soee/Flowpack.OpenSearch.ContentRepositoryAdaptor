@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Service;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Unit\Service;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,7 +13,7 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Unit\Service;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Service\IndexNameService;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Service\IndexNameService;
 use Neos\Flow\Tests\UnitTestCase;
 
 class IndexNameServiceTest extends UnitTestCase

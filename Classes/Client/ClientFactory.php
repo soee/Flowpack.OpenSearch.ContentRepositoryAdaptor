@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Client;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Client;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,8 +13,8 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Client;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
-use Flowpack\ElasticSearch\Domain\Model\Client;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
+use Flowpack\OpenSearch\Domain\Model\Client;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -24,7 +24,7 @@ class ClientFactory
 {
     /**
      * @Flow\Inject
-     * @var \Flowpack\ElasticSearch\Domain\Factory\ClientFactory
+     * @var \Flowpack\OpenSearch\Domain\Factory\ClientFactory
      */
     protected $clientFactory;
 
@@ -32,10 +32,10 @@ class ClientFactory
      * Create a client
      *
      * @return Client
-     * @throws \Flowpack\ElasticSearch\Exception
+     * @throws \Flowpack\OpenSearch\Exception
      */
     public function create(): Client
     {
-        return $this->clientFactory->create(null, ElasticSearchClient::class);
+        return $this->clientFactory->create(null, OpenSearchClient::class);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,13 +13,13 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Tests\Functional;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Command\NodeIndexCommandController;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\Eel\ElasticSearchQueryBuilder;
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Command\NodeIndexCommandController;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Tests\FunctionalTestCase;
 
-abstract class BaseElasticsearchContentRepositoryAdapterTest extends FunctionalTestCase
+abstract class BaseOpenSearchContentRepositoryAdapterTest extends FunctionalTestCase
 {
     protected const TESTING_INDEX_PREFIX = 'neoscr_testing';
 
@@ -34,9 +34,9 @@ abstract class BaseElasticsearchContentRepositoryAdapterTest extends FunctionalT
     protected $nodeIndexCommandController;
 
     /**
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $searchClient;
+    protected $openSearchClient;
 
     protected static $instantiatedIndexes = [];
 
@@ -45,7 +45,7 @@ abstract class BaseElasticsearchContentRepositoryAdapterTest extends FunctionalT
         parent::setUp();
 
         $this->nodeIndexCommandController = $this->objectManager->get(NodeIndexCommandController::class);
-        $this->searchClient = $this->objectManager->get(ElasticSearchClient::class);
+        $this->openClient = $this->objectManager->get(OpenSearchClient::class);
     }
 
     public function tearDown(): void
@@ -58,7 +58,7 @@ abstract class BaseElasticsearchContentRepositoryAdapterTest extends FunctionalT
 
         if (!$this->isIndexInitialized()) {
             // clean up any existing indices
-            $this->searchClient->request('DELETE', '/' . self::TESTING_INDEX_PREFIX . '*');
+            $this->openSearchClient->request('DELETE', '/' . self::TESTING_INDEX_PREFIX . '*');
         }
     }
 
@@ -82,16 +82,16 @@ abstract class BaseElasticsearchContentRepositoryAdapterTest extends FunctionalT
     }
 
     /**
-     * @return ElasticSearchQueryBuilder
+     * @return OpenSearchQueryResult
      */
-    protected function getQueryBuilder(): ElasticSearchQueryBuilder
+    protected function getQueryBuilder(): OpenSearchQueryResult
     {
         try {
-            /** @var ElasticSearchQueryBuilder $elasticSearchQueryBuilder */
-            $elasticSearchQueryBuilder = $this->objectManager->get(ElasticSearchQueryBuilder::class);
-            $this->inject($elasticSearchQueryBuilder, 'now', new \DateTimeImmutable('@1735685400')); // Dec. 31, 2024 23:50:00
+            /** @var OpenSearchQueryBuilder $openSearchQueryBuilder */
+            $openSearchQueryBuilder = $this->objectManager->get(OpenSearchQueryResult::class);
+            $this->inject($openSearchQueryBuilder, 'now', new \DateTimeImmutable('@1735685400')); // Dec. 31, 2024 23:50:00
 
-            return $elasticSearchQueryBuilder;
+            return $openSearchQueryBuilder;
         } catch (\Exception $exception) {
             static::fail('Setting up the QueryBuilder failed: ' . $exception->getMessage());
         }

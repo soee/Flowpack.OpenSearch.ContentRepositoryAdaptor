@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,20 +13,20 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\ContentRepositoryAdaptor\ElasticSearchClient;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
 use Psr\Log\LoggerInterface;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * Abstract Elasticsearch driver
+ * Abstract Opensearch driver
  */
 abstract class AbstractDriver
 {
     /**
      * @Flow\Inject
-     * @var ElasticSearchClient
+     * @var OpenSearchClient
      */
-    protected $searchClient;
+    protected $openSearchClient;
 
     /**
      * @Flow\Inject

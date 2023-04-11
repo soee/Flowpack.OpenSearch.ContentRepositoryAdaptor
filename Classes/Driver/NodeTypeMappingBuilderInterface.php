@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
+namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Driver;
 
 /*
- * This file is part of the Flowpack.ElasticSearch.ContentRepositoryAdaptor package.
+ * This file is part of the Flowpack.OpenSearch.ContentRepositoryAdaptor package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,8 +14,8 @@ namespace Flowpack\ElasticSearch\ContentRepositoryAdaptor\Driver;
  * source code.
  */
 
-use Flowpack\ElasticSearch\Domain\Model\Index;
-use Flowpack\ElasticSearch\Mapping\MappingCollection;
+use Flowpack\OpenSearch\Domain\Model\Index;
+use Flowpack\OpenSearch\Mapping\MappingCollection;
 use Neos\Error\Messages\Result;
 
 /**
@@ -27,7 +27,7 @@ interface NodeTypeMappingBuilderInterface
      * Builds a Mapping Collection from the configured node types
      *
      * @param Index $index
-     * @return MappingCollection<\Flowpack\ElasticSearch\Domain\Model\Mapping>
+     * @return MappingCollection<\Flowpack\OpenSearch\Domain\Model\Mapping>
      */
     public function buildMappingInformation(Index $index): MappingCollection;
 

@@ -1,5 +1,5 @@
 Neos\ContentRepository\Search\Search\QueryBuilderInterface:
-  className: Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult
+  className: Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryBuilder
 
 Neos\ContentRepository\Search\Indexer\NodeIndexerInterface:
   className: 'Flowpack\OpenSearch\ContentRepositoryAdaptor\Indexer\NodeIndexer'

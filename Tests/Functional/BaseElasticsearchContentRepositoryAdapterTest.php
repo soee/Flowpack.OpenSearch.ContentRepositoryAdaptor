@@ -14,6 +14,7 @@ namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Tests\Functional;
  */
 
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\Command\NodeIndexCommandController;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryBuilder;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
@@ -72,13 +73,13 @@ abstract class BaseOpenSearchContentRepositoryAdapterTest extends FunctionalTest
     }
 
     /**
-     * @return OpenSearchQueryResult
+     * @return OpenSearchQueryBuilder
      */
-    protected function getQueryBuilder(): OpenSearchQueryResult
+    protected function getQueryBuilder(): OpenSearchQueryBuilder
     {
         try {
             /** @var OpenSearchQueryBuilder $openSearchQueryBuilder */
-            $openSearchQueryBuilder = $this->objectManager->get(OpenSearchQueryResult::class);
+            $openSearchQueryBuilder = $this->objectManager->get(OpenSearchQueryBuilder::class);
             $this->inject($openSearchQueryBuilder, 'now', new \DateTimeImmutable('@1735685400')); // Dec. 31, 2024 23:50:00
 
             return $openSearchQueryBuilder;

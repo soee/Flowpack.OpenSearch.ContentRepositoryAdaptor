@@ -32,7 +32,7 @@ class IndexerDriver extends AbstractIndexerDriver implements IndexerDriverInterf
     /**
      * {@inheritdoc}
      */
-    public function document(string $indexName, NodeInterface $node, ElasticSearchDocument $document, array $documentData): array
+    public function document(string $indexName, NodeInterface $node, OpenSearchDocument $document, array $documentData): array
     {
         if ($this->isFulltextRoot($node)) {
             // for fulltext root documents, we need to preserve the "neos_fulltext" field. That's why we use the
@@ -41,7 +41,6 @@ class IndexerDriver extends AbstractIndexerDriver implements IndexerDriverInterf
             return [
                 [
                     'update' => [
-                        '_type' => '_doc',
                         '_id' => $document->getId(),
                         '_index' => $indexName,
                         'retry_on_conflict' => 3
@@ -70,7 +69,6 @@ class IndexerDriver extends AbstractIndexerDriver implements IndexerDriverInterf
         return [
             [
                 'index' => [
-                    '_type' => '_doc',
                     '_id' => $document->getId(),
                     '_index' => $indexName,
                 ]
@@ -110,7 +108,6 @@ class IndexerDriver extends AbstractIndexerDriver implements IndexerDriverInterf
         return [
             [
                 'update' => [
-                    '_type' => '_doc',
                     '_id' => $closestFulltextNodeDocumentIdentifier
                 ]
             ],

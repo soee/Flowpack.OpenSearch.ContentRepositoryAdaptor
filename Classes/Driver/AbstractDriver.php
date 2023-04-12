@@ -26,7 +26,7 @@ abstract class AbstractDriver
      * @Flow\Inject
      * @var OpenSearchClient
      */
-    protected $openSearchClient;
+    protected $searchClient;
 
     /**
      * @Flow\Inject

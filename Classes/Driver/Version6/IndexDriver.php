@@ -31,7 +31,7 @@ class IndexDriver extends AbstractDriver implements IndexDriverInterface
     /**
      * {@inheritdoc}
      */
-    public function aliasActions(array $actions)
+    public function aliasActions(array $actions): void
     {
         $this->searchClient->request('POST', '/_aliases', [], \json_encode(['actions' => $actions]));
     }
@@ -94,7 +94,7 @@ class IndexDriver extends AbstractDriver implements IndexDriverInterface
 
         return \array_filter(\array_keys($treatedContent), static function ($indexName) use ($prefix) {
             $prefix .= IndexNameService::INDEX_PART_SEPARATOR;
-            return strpos($indexName, $prefix) === 0;
+            return str_starts_with($indexName, $prefix);
         });
     }
 }

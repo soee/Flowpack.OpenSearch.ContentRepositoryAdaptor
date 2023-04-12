@@ -28,9 +28,9 @@ use Neos\Flow\Persistence\QueryResultInterface;
 class OpenSearchQuery implements QueryInterface
 {
     /**
-     * @var OpenSearchQueryResult
+     * @var OpenSearchQueryBuilder
      */
-    protected $queryBuilder;
+    protected OpenSearchQueryBuilder $queryBuilder;
 
     /**
      * @var array
@@ -292,9 +292,9 @@ class OpenSearchQuery implements QueryInterface
     }
 
     /**
-     * @return OpenSearchQueryResult
+     * @return OpenSearchQueryBuilder
      */
-    public function getQueryBuilder(): OpenSearchQueryResult
+    public function getQueryBuilder(): OpenSearchQueryBuilder
     {
         return $this->queryBuilder;
     }

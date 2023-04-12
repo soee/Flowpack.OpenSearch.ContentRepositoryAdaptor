@@ -90,16 +90,16 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
 
     /**
      * This (internal) array stores, for the last search request, a mapping from Node Identifiers
-     * to the full Elasticsearch Hit which was returned.
+     * to the full OpenSearch Hit which was returned.
      *
      * This is needed to e.g. use result highlighting.
      *
      * @var array
      */
-    protected $elasticSearchHitsIndexedByNodeFromLastRequest;
+    protected $openSearchHitsIndexedByNodeFromLastRequest;
 
     /**
-     * The Elasticsearch request, as it is being built up.
+     * The OpenSearch request, as it is being built up.
      *
      * @var QueryInterface
      * @Flow\Inject
@@ -240,7 +240,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
@@ -252,10 +252,10 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
     /**
      * @param string $propertyName
      * @param mixed $value
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      */
-    public function exclude(string $propertyName, $value): OpenSearchQueryResult
+    public function exclude(string $propertyName, $value): QueryBuilderInterface
     {
         return $this->queryFilter('term', [$propertyName => $this->convertValue($value)], 'must_not');
     }
@@ -266,11 +266,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function greaterThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
+    public function greaterThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryBuilder
     {
         return $this->queryFilter('range', [$propertyName => ['gt' => $this->convertValue($value)]], $clauseType);
     }
@@ -281,11 +281,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function greaterThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
+    public function greaterThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryBuilder
     {
         return $this->queryFilter('range', [$propertyName => ['gte' => $this->convertValue($value)]], $clauseType);
     }
@@ -296,11 +296,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function lessThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
+    public function lessThan(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryBuilder
     {
         return $this->queryFilter('range', [$propertyName => ['lt' => $this->convertValue($value)]], $clauseType);
     }
@@ -311,11 +311,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $propertyName Name of the property
      * @param mixed $value Value for comparison
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function lessThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryResult
+    public function lessThanOrEqual(string $propertyName, $value, string $clauseType = 'must'): OpenSearchQueryBuilder
     {
         return $this->queryFilter('range', [$propertyName => ['lte' => $this->convertValue($value)]], $clauseType);
     }
@@ -330,11 +330,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $filterType
      * @param mixed $filterOptions
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function queryFilter(string $filterType, $filterOptions, string $clauseType = 'must'): OpenSearchQueryResult
+    public function queryFilter(string $filterType, $filterOptions, string $clauseType = 'must'): OpenSearchQueryBuilder
     {
         $this->request->queryFilter($filterType, $filterOptions, $clauseType);
 
@@ -348,10 +348,10 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param string $path
      * @param array $data
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      */
-    public function appendAtPath(string $path, array $data): OpenSearchQueryResult
+    public function appendAtPath(string $path, array $data): OpenSearchQueryBuilder
     {
         $this->request->appendAtPath($path, $data);
 
@@ -375,11 +375,11 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param array $data An associative array of keys as variable names and values as variable values
      * @param string $clauseType one of must, should, must_not
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      * @api
      */
-    public function queryFilterMultiple(array $data, $clauseType = 'must'): OpenSearchQueryResult
+    public function queryFilterMultiple(array $data, $clauseType = 'must'): OpenSearchQueryBuilder
     {
         foreach ($data as $key => $value) {
             if ($value !== null) {
@@ -408,10 +408,10 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $type Aggregation type
      * @param string $parentPath
      * @param int|null $size The amount of buckets to return or null if not applicable to the aggregation
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      */
-    public function fieldBasedAggregation(string $name, string $field, string $type = 'terms', string $parentPath = '', ?int $size = null): OpenSearchQueryResult
+    public function fieldBasedAggregation(string $name, string $field, string $type = 'terms', string $parentPath = '', ?int $size = null): OpenSearchQueryBuilder
     {
         $aggregationDefinition = [
             $type => [
@@ -446,10 +446,10 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $name
      * @param array $aggregationDefinition
      * @param string $parentPath
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @throws QueryBuildingException
      */
-    public function aggregation(string $name, array $aggregationDefinition, string $parentPath = ''): OpenSearchQueryResult
+    public function aggregation(string $name, array $aggregationDefinition, string $parentPath = ''): OpenSearchQueryBuilder
     {
         $this->request->aggregation($name, $aggregationDefinition, $parentPath);
 
@@ -468,9 +468,9 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      * @param string $text
      * @param string $field
      * @param string $name
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      */
-    public function termSuggestions(string $text, string $field = 'neos_fulltext.text', string $name = 'suggestions'): OpenSearchQueryResult
+    public function termSuggestions(string $text, string $field = 'neos_fulltext.text', string $name = 'suggestions'): OpenSearchQueryBuilder
     {
         $suggestionDefinition = [
             'text' => $text,
@@ -502,9 +502,9 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param string $name
      * @param array $suggestionDefinition
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      */
-    public function suggestions(string $name, array $suggestionDefinition): OpenSearchQueryResult
+    public function suggestions(string $name, array $suggestionDefinition): OpenSearchQueryBuilder
     {
         $this->request->suggestions($name, $suggestionDefinition);
 
@@ -512,7 +512,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
     }
 
     /**
-     * Get the Elasticsearch request as we need it
+     * Get the OpenSearch request as we need it
      *
      * @return QueryInterface
      */
@@ -522,13 +522,13 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
     }
 
     /**
-     * Log the current request to the Elasticsearch log for debugging after it has been executed.
+     * Log the current request to the OpenSearch log for debugging after it has been executed.
      *
      * @param string $message an optional message to identify the log entry
-     * @return OpenSearchQueryResult
+     * @return QueryBuilderInterface
      * @api
      */
-    public function log($message = null): OpenSearchQueryResult
+    public function log($message = null): OpenSearchQueryBuilder
     {
         $this->logThisQuery = true;
         $this->logMessage = $message;
@@ -561,14 +561,14 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
     }
 
     /**
-     * This low-level method can be used to look up the full Elasticsearch hit given a certain node.
+     * This low-level method can be used to look up the full OpenSearch hit given a certain node.
      *
      * @param NodeInterface $node
-     * @return array the Elasticsearch hit for the node as array, or NULL if it does not exist.
+     * @return array the OpenSearch hit for the node as array, or NULL if it does not exist.
      */
-    public function getFullElasticSearchHitForNode(NodeInterface $node): ?array
+    public function getFullOpenSearchHitForNode(NodeInterface $node): ?array
     {
-        return $this->elasticSearchHitsIndexedByNodeFromLastRequest[$node->getIdentifier()] ?? null;
+        return $this->openSearchHitsIndexedByNodeFromLastRequest[$node->getIdentifier()] ?? null;
     }
 
     /**
@@ -792,7 +792,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
             $response = $this->openSearchClient->getIndex()->request('GET', '/_search', [], $request->toArray())->getTreatedContent();
             $respondedDocuments = Arrays::getValueByPath($response, 'hits.hits');
             if (count($respondedDocuments) === 0) {
-                $this->logger->info(sprintf('The node with identifier %s was not found in the elasticsearch index.', $node->getIdentifier()), LogEnvironment::fromMethodName(__METHOD__));
+                $this->logger->info(sprintf('The node with identifier %s was not found in the OpenSearch index.', $node->getIdentifier()), LogEnvironment::fromMethodName(__METHOD__));
                 return [];
             }
 
@@ -871,9 +871,9 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param string $path
      * @param mixed $requestPart
-     * @return OpenSearchQueryResult
+     * @return OpenSearchQueryBuilder
      */
-    public function request(string $path, $requestPart): OpenSearchQueryResult
+    public function request(string $path, $requestPart): OpenSearchQueryBuilder
     {
         $this->request->setByPath($path, $requestPart);
 
@@ -898,7 +898,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
     protected function convertHitsToNodes(array $hits): array
     {
         $nodes = [];
-        $elasticSearchHitPerNode = [];
+        $openSearchHitPerNode = [];
         $notConvertedNodePaths = [];
 
         /**
@@ -933,7 +933,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
             }
 
             $nodes[$node->getIdentifier()] = $node;
-            $elasticSearchHitPerNode[$node->getIdentifier()] = $hit;
+            $openSearchHitPerNode[$node->getIdentifier()] = $hit;
             if ($this->limit > 0 && count($nodes) >= $this->limit) {
                 break;
             }
@@ -945,7 +945,7 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
             $this->logger->warning(sprintf('[%s] Search resulted in %s hits but only %s hits could be converted to nodes. Nodes with paths "%s" could not have been converted.', $this->logMessage, count($hits), count($nodes), implode(', ', $notConvertedNodePaths)), LogEnvironment::fromMethodName(__METHOD__));
         }
 
-        $this->elasticSearchHitsIndexedByNodeFromLastRequest = $elasticSearchHitPerNode;
+        $this->openSearchHitsIndexedByNodeFromLastRequest = $openSearchHitPerNode;
 
         return array_values($nodes);
     }
@@ -1032,10 +1032,10 @@ class OpenSearchQueryBuilder implements QueryBuilderInterface, ProtectedContextA
      *
      * @param string $method
      * @param array $arguments
-     * @return OpenSearchQueryResult
+     * @return OpenSearchQueryBuilder
      * @throws Exception
      */
-    public function __call(string $method, array $arguments): OpenSearchQueryResult
+    public function __call(string $method, array $arguments): OpenSearchQueryBuilder
     {
         if (!method_exists($this->request, $method)) {
             throw new Exception(sprintf('Method "%s" does not exist in the current Request object "%s"', $method, get_class($this->request)), 1486763515);

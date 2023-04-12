@@ -67,7 +67,7 @@ class NodeIndexer extends AbstractNodeIndexer implements BulkNodeIndexerInterfac
      * @Flow\Inject
      * @var OpenSearchClient
      */
-    protected $openSearchClient;
+    protected $searchClient;
 
     /**
      * @Flow\Inject

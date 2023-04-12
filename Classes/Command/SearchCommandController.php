@@ -13,7 +13,7 @@ namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\Command;
  * source code.
  */
 
-use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
+use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryBuilder;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\OpenSearchQueryResult;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\Eel\SearchResultHelper;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\OpenSearchClient;
@@ -67,7 +67,7 @@ class SearchCommandController extends CommandController
             $this->sendAndExit(1);
         }
 
-        $queryBuilder = new OpenSearchQueryResult();
+        $queryBuilder = new OpenSearchQueryBuilder();
         $queryBuilder = $queryBuilder->query($contextNode)
             ->fulltext($searchWord)
             ->limit(10)
@@ -111,7 +111,7 @@ class SearchCommandController extends CommandController
 
         $context = $this->createContext($dimensions);
 
-        $queryBuilder = new OpenSearchQueryResult();
+        $queryBuilder = new OpenSearchQueryBuilder();
         $queryBuilder->query($context->getRootNode());
         $queryBuilder->exactMatch('neos_node_identifier', $identifier);
 

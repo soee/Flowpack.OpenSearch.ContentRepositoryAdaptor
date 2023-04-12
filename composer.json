@@ -14,7 +14,7 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "flowpack/opensearch": "^1.0",
+        "flowpack/opensearch": "dev-master",
         "neos/content-repository": "^7.0 || ^8.0 || dev-master",
         "neos/content-repository-search": "^4.0 || dev-master",
         "neos/eel": "^7.0 || ^8.0 || dev-master",

@@ -22,22 +22,12 @@ use Neos\Flow\Tests\FunctionalTestCase;
 abstract class BaseOpenSearchContentRepositoryAdapterTest extends FunctionalTestCase
 {
     protected const TESTING_INDEX_PREFIX = 'neoscr_testing';
-
-    /**
-     * @var boolean
-     */
     protected static $testablePersistenceEnabled = true;
-
+    protected NodeIndexCommandController $nodeIndexCommandController;
+    protected OpenSearchClient $openSearchClient;
     /**
-     * @var NodeIndexCommandController
+     * @var array<string, bool>
      */
-    protected $nodeIndexCommandController;
-
-    /**
-     * @var OpenSearchClient
-     */
-    protected $openSearchClient;
-
     protected static $instantiatedIndexes = [];
 
     public function setUp(): void
@@ -45,7 +35,7 @@ abstract class BaseOpenSearchContentRepositoryAdapterTest extends FunctionalTest
         parent::setUp();
 
         $this->nodeIndexCommandController = $this->objectManager->get(NodeIndexCommandController::class);
-        $this->openClient = $this->objectManager->get(OpenSearchClient::class);
+        $this->openSearchClient = $this->objectManager->get(OpenSearchClient::class);
     }
 
     public function tearDown(): void

@@ -2,12 +2,19 @@
     "name": "flowpack/opensearch-contentrepositoryadaptor",
     "type": "neos-package",
     "description": "This package provides functionality for using Opensearch on top of Neos.ContentRepository.Search",
-    "homepage": "http://flowpack.org/",
     "license": ["LGPL-3.0-only"],
+    "authors": [
+        {
+            "name": "Marcin Sągol",
+            "email": "kontakt@soee.pl",
+            "homepage": "https://soee.pl",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "flowpack/opensearch": "^5.0 || dev-master",
+        "flowpack/opensearch": "^1.0",
         "neos/content-repository": "^7.0 || ^8.0 || dev-master",
         "neos/content-repository-search": "^4.0 || dev-master",
         "neos/eel": "^7.0 || ^8.0 || dev-master",
@@ -15,10 +22,21 @@
         "neos/fluid-adaptor": "^7.0 || ^8.0 || dev-master",
         "neos/utility-arrays": "^7.0 || ^8.0 || dev-master"
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.16"
+    },
     "autoload": {
         "psr-4": {
             "Flowpack\\OpenSearch\\ContentRepositoryAdaptor\\": "Classes"
         }
+    },
+    "scripts": {
+        "ci:php:cs-fixer": [
+            "php-cs-fixer fix -v --dry-run --using-cache no --diff"
+        ],
+        "fix:php:cs-fixer": [
+            "php-cs-fixer fix -v --using-cache no"
+        ]
     },
     "extra": {
         "applied-flow-migrations": [

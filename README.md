@@ -120,7 +120,7 @@ If you want to fine-tune the indexing and mapping on a more detailed level, you 
 
 ### Configure the index name
 
-If you need to run serveral (different) neos instances on the same elasticsearch server you will need to change the Configuration/Settings.yaml indexName for each of your project.
+If you need to run serveral (different) neos instances on the same OpenSearch server you will need to change the Configuration/Settings.yaml indexName for each of your project.
 
 So `./flow nodeindex:build` or `./flow nodeindex:cleanup` won't overwrite your other sites index.
 
@@ -128,7 +128,7 @@ So `./flow nodeindex:build` or `./flow nodeindex:cleanup` won't overwrite your o
 Neos:
   ContentRepository:
     Search:
-      elasticSearch:
+      openSearch:
         indexName: useMoreSpecificIndexName
 ```
 
@@ -140,10 +140,10 @@ You can set one default configuration for all indices with your index prefix.
 
 ```yaml
 Flowpack:
-  ElasticSearch:
+  OpenSearch:
     indexes:
       default: # Configuration bundle name
-        neoscontentrepository: # The index prefix name, must be the same as in the Neos.ContentRepository.Search.elasticSearch.indexName setting
+        neoscontentrepository: # The index prefix name, must be the same as in the Neos.ContentRepository.Search.openSearch.indexName setting
           settings:
             index:
               number_of_shards: 1
@@ -158,7 +158,7 @@ As an index is created for every dimension combination of the Neos content repos
 
 ```yaml
 Flowpack:
-  ElasticSearch:
+  OpenSearch:
     indexes:
       default: 
         'neoscontentrepository-0359ed5c416567b8bc2e5ade0f277b36': # The hash specifies the dimension combination
@@ -238,7 +238,7 @@ Furthermore, this can be overridden using the `properties.[....].search` path in
 
 This configuration contains two parts:
 
-* Underneath `openSearchMapping`, the Elasticsearch property mapping can be defined.
+* Underneath `openSearchMapping`, the OpenSearch property mapping can be defined.
 * Underneath `indexing`, an Eel expression which processes the value before indexing has to be
   specified. It has access to the current `value` and the current `node`.
 
@@ -267,7 +267,7 @@ Neos:
       search:
 
         # A date should be mapped differently, and in this case we want to use a date format which
-        # Elasticsearch understands
+        # OpenSearch understands
         openSearchMapping:
           type: DateTime
           format: 'date_time_no_millis'
@@ -330,7 +330,7 @@ An example:
 
 ### Working with Dates
 
-As a default, Elasticsearch indexes dates in the UTC Timezone. In order to have it index using the timezone
+As a default, OpenSearch indexes dates in the UTC Timezone. In order to have it index using the timezone
 currently configured in PHP, the configuration for any property in a node which represents a date should look like this:
 
 ```yaml
@@ -353,7 +353,7 @@ If you want to filter items by date, e.g. to show items with date later than tod
 ${...greaterThan('date', Date.format(Date.Now(), "Y-m-d\TH:i:sP"))...}
 ```
 
-For more information on Elasticsearch's Date Formats,
+For more information on OpenSearch's Date Formats,
 [click here](http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html).
 
 
@@ -404,7 +404,7 @@ We'll first show how to do arbitrary Elasticsearch Queries in Fusion. This is a 
 alternative to FlowQuery. In the long run, we might be able to integrate this API back into FlowQuery,
 but for now it works well as-is.
 
-Generally, Elasticsearch queries are done using the `Search` Eel helper. In case you want
+Generally, OpenSearch queries are done using the `Search` Eel helper. In case you want
 to retrieve a *list of nodes*, you'll generally do:
 ```
 nodes = ${Search.query(site)....execute()}
@@ -427,23 +427,23 @@ Furthermore, the following operators are supported:
 
 As **value**, the following methods accept a simple type, a node object or a DateTime object.
 
-| Query Operator | Description |
-|----------------|-------------|
-|`nodeType('Your.Node:Type')`                          |Filters on the given NodeType|
-|`exactMatch('propertyName', value)`                   |Supports simple types: `exactMatch('tag', 'foo')`, or node references: `exactMatch('author', authorNode)`|
-|`exclude('propertyName', value)`                      |Excludes results by property - the negation of exactMatch.
-|`greaterThan('propertyName', value, [clauseType])`    |Range filter with property values greater than the given value|
-|`greaterThanOrEqual('propertyName', value, [clauseType])`|Range filter with property values greater than or equal to the given value|
-|`lessThan('propertyName', value, [clauseType])`       |Range filter with property values less than the given value|
-|`lessThanOrEqual('propertyName', value, [clauseType])`|Range filter with property values less than or equal to the given value|
-|`sortAsc('propertyName')` / `sortDesc('propertyName')`|Can also be used multiple times, e.g. `sortAsc('tag').sortDesc('date')` will first sort by tag ascending, and then by date descending.|
-|`limit(5)`                                            |Only return five results. If not specified, the default limit by Elasticsearch applies (which is at 10 by default)|
-|`from(5)`                                                        |Return the results starting from the 6th one|
-|`prefix('propertyName', 'prefix', [clauseType])`                 |Adds a prefix filter on the given field with the given prefix|
-|`geoDistance(propertyName, geoPoint, distance, [clauseType])`.   |Filters documents that include only hits that exists within a specific distance from a geo point.|
-|`fulltext('searchWord', options)`                                |Does a query_string query on the Fulltext index using the searchword and additional [options](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/query-dsl-query-string-query.html) to the query_string. Recommendation: **use simpleQueryStringFulltext instead, as it yields better results and is more tolerant to user input**.|
-|`simpleQueryStringFulltext('searchWord', options)`               |Does a simple_query_string query on the Fulltext index using the searchword and additional [options](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/query-dsl-simple-query-string-query.html) to the simple_query_string. Supports phrase matching like `"firstname lastname"` and tolerates broken input without exceptions (in contrast to `fulltext()`)|
-|`highlight(fragmentSize, fragmentCount, noMatchSize, field)`     |Configure result highlighting for every fulltext field individually|
+| Query Operator | Description                                                                                                                                                                                                                                                                                                                                                             |
+|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`nodeType('Your.Node:Type')`                          | Filters on the given NodeType                                                                                                                                                                                                                                                                                                                                           |
+|`exactMatch('propertyName', value)`                   | Supports simple types: `exactMatch('tag', 'foo')`, or node references: `exactMatch('author', authorNode)`                                                                                                                                                                                                                                                               |
+|`exclude('propertyName', value)`                      | Excludes results by property - the negation of exactMatch.                                                                                                                                                                                                                                                                                                              
+|`greaterThan('propertyName', value, [clauseType])`    | Range filter with property values greater than the given value                                                                                                                                                                                                                                                                                                          |
+|`greaterThanOrEqual('propertyName', value, [clauseType])`| Range filter with property values greater than or equal to the given value                                                                                                                                                                                                                                                                                              |
+|`lessThan('propertyName', value, [clauseType])`       | Range filter with property values less than the given value                                                                                                                                                                                                                                                                                                             |
+|`lessThanOrEqual('propertyName', value, [clauseType])`| Range filter with property values less than or equal to the given value                                                                                                                                                                                                                                                                                                 |
+|`sortAsc('propertyName')` / `sortDesc('propertyName')`| Can also be used multiple times, e.g. `sortAsc('tag').sortDesc('date')` will first sort by tag ascending, and then by date descending.                                                                                                                                                                                                                                  |
+|`limit(5)`                                            | Only return five results. If not specified, the default limit by OpenSearch applies (which is at 10 by default)                                                                                                                                                                                                                                                         |
+|`from(5)`                                                        | Return the results starting from the 6th one                                                                                                                                                                                                                                                                                                                            |
+|`prefix('propertyName', 'prefix', [clauseType])`                 | Adds a prefix filter on the given field with the given prefix                                                                                                                                                                                                                                                                                                           |
+|`geoDistance(propertyName, geoPoint, distance, [clauseType])`.   | Filters documents that include only hits that exists within a specific distance from a geo point.                                                                                                                                                                                                                                                                       |
+|`fulltext('searchWord', options)`                                | Does a query_string query on the Fulltext index using the searchword and additional [options](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/query-dsl-query-string-query.html) to the query_string. Recommendation: **use simpleQueryStringFulltext instead, as it yields better results and is more tolerant to user input**.                            |
+|`simpleQueryStringFulltext('searchWord', options)`               | Does a simple_query_string query on the Fulltext index using the searchword and additional [options](https://www.elastic.co/guide/en/elasticsearch/reference/8.3/query-dsl-simple-query-string-query.html) to the simple_query_string. Supports phrase matching like `"firstname lastname"` and tolerates broken input without exceptions (in contrast to `fulltext()`) |
+|`highlight(fragmentSize, fragmentCount, noMatchSize, field)`     | Configure result highlighting for every fulltext field individually                                                                                                                                                                                                                                                                                                     |
 
 ## Search Result Highlighting
 

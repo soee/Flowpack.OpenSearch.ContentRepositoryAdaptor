@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling;
@@ -28,16 +29,11 @@ class FileStorage implements ErrorStorageInterface
     }
 
     /**
-     * Log the error message
-     *
-     * @param array $errorResult
-     * @return string
      * @throws RuntimeException
      */
     public function logErrorResult(array $errorResult): string
     {
         $referenceCode = date('YmdHis', $_SERVER['REQUEST_TIME']) . substr(md5((string)rand()), 0, 6);
-
         $filename = FLOW_PATH_DATA . 'Logs/OpenSearch/' . $referenceCode . '.txt';
         $message = sprintf('OpenSearch API Error detected - See also: Data/Logs/OpenSearch/%s on host: %s', basename($filename), gethostname());
 
@@ -50,13 +46,10 @@ class FileStorage implements ErrorStorageInterface
         return $message;
     }
 
-    /**
-     * @param array $errorResult
-     * @return string
-     */
     protected function renderErrorResult(array $errorResult): string
     {
         $error = json_encode($errorResult, JSON_PRETTY_PRINT);
+
         return sprintf("Error:\n=======\n\n%s\n\n", $error);
     }
 }

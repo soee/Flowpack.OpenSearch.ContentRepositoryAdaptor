@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling;
@@ -27,34 +28,19 @@ class ErrorHandlingService
      * @Flow\Inject
      * @var LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
+    protected int $errorCount = 0;
 
-    /**
-     * @var int
-     */
-    protected $errorCount = 0;
-
-    /**
-     * @param string $message
-     * @param $context
-     */
     public function log(string $message, $context): void
     {
         $this->errorCount++;
         $this->logger->error($message, $context);
     }
-
-    /**
-     * @return int
-     */
     public function getErrorCount(): int
     {
         return $this->errorCount;
     }
 
-    /**
-     * @return bool
-     */
     public function hasError(): bool
     {
         return $this->errorCount > 0;

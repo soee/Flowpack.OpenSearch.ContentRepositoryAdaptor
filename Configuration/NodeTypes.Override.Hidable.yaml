@@ -3,3 +3,5 @@
     'neos_hidden':
       search:
         indexing: '${node.hidden}'
+        openSearchMapping:
+          type: boolean

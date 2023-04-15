@@ -86,6 +86,6 @@ return (new PhpCsFixer\Config())
     )
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->exclude('Documentation')
+            //->exclude('Documentation')
             ->in(__DIR__)
     );

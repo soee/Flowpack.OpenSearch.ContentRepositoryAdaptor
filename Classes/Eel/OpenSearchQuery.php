@@ -23,8 +23,8 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 
 /**
- * This OpenSearchQuery object is just used inside OpenSearchQueryResult->getQuery(), so that pagination
- * widgets etc work in the same manner for OpenSearch results.
+ * The OpenSearchQuery object is primarily used within the OpenSearchQueryResult->getQuery() method,
+ * ensuring that pagination widgets and other similar components function consistently for OpenSearch results.
  */
 class OpenSearchQuery implements QueryInterface
 {
@@ -36,7 +36,7 @@ class OpenSearchQuery implements QueryInterface
     /**
      * @var array
      */
-    protected static $runtimeQueryResultCache;
+    protected static array $runtimeQueryResultCache;
 
     /**
      * OpenSearchQuery constructor.
@@ -61,9 +61,11 @@ class OpenSearchQuery implements QueryInterface
     public function execute(bool $cacheResult = false): QueryResultInterface
     {
         $queryHash = md5($this->queryBuilder->getIndexName() . json_encode($this->queryBuilder->getRequest(), JSON_THROW_ON_ERROR));
+
         if ($cacheResult === true && isset(self::$runtimeQueryResultCache[$queryHash])) {
             return self::$runtimeQueryResultCache[$queryHash];
         }
+
         $queryResult = new OpenSearchQueryResult($this);
         self::$runtimeQueryResultCache[$queryHash] = $queryResult;
 

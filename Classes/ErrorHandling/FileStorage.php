@@ -17,7 +17,7 @@ namespace Flowpack\OpenSearch\ContentRepositoryAdaptor\ErrorHandling;
 use Flowpack\OpenSearch\ContentRepositoryAdaptor\Exception\RuntimeException;
 
 /**
- * Handle error result and build human readable output for analysis
+ * Handle the error result and construct human-readable output for analysis
  */
 class FileStorage implements ErrorStorageInterface
 {
@@ -34,13 +34,17 @@ class FileStorage implements ErrorStorageInterface
     public function logErrorResult(array $errorResult): string
     {
         $referenceCode = date('YmdHis', $_SERVER['REQUEST_TIME']) . substr(md5((string)rand()), 0, 6);
-        $filename = FLOW_PATH_DATA . 'Logs/OpenSearch/' . $referenceCode . '.txt';
-        $message = sprintf('OpenSearch API Error detected - See also: Data/Logs/OpenSearch/%s on host: %s', basename($filename), gethostname());
+        $logDirectory = FLOW_PATH_DATA . 'Logs/OpenSearch';
+        $filename = $logDirectory . '/' . $referenceCode . '.txt';
+        $message = sprintf('OpenSearch API Error detected - see also: Data/Logs/OpenSearch/%s on host: %s', basename($filename), gethostname());
 
-        if (file_exists(FLOW_PATH_DATA . 'Logs/OpenSearch') && is_dir(FLOW_PATH_DATA . 'Logs/OpenSearch') && is_writable(FLOW_PATH_DATA . 'Logs/OpenSearch')) {
+        if (file_exists($logDirectory) && is_dir($logDirectory) && is_writable($logDirectory)) {
             file_put_contents($filename, $this->renderErrorResult($errorResult));
         } else {
-            throw new RuntimeException('OpenSearch error response could not be written to ' . $filename, 1588835331);
+            throw new RuntimeException(
+                'OpenSearch error response could not be written to ' . $filename,
+                1588835331
+            );
         }
 
         return $message;
